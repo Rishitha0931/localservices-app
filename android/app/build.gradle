@@ -1,0 +1,44 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")
+}
+
+android {
+    namespace "com.vrlocalservices.app"   // ← must match your Firebase google-services.json package
+    compileSdk = 35                       // ← compile against SDK 35 (plugin needs it)
+    ndkVersion = flutter.ndkVersion
+
+    defaultConfig {
+        applicationId "com.vrlocalservices.app" // ← installer id (must match google-services.json)
+        minSdkVersion 23
+        targetSdk = 35
+        versionCode flutter.versionCode
+        versionName flutter.versionName
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildTypes {
+        release {
+            // temporarily speed up build if needed:
+            // minifyEnabled false
+            // shrinkResources false
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+apply plugin: "com.google.gms.google-services"

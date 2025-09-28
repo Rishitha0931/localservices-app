@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "899887915588",
+    "project_id": "localservicesapp-9cc3e",
+    "storage_bucket": "localservicesapp-9cc3e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899887915588:android:34fb7d356ea7be6e2a9211",
+        "android_client_info": {
+          "package_name": "com.vrlocalservices.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbNL5IvuThBVnzhAhVry4lBZvhjoisA4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
