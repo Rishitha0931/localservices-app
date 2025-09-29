@@ -1,16 +1,20 @@
-# my_local_services_app
+# My Local Services App:
+**"VR Local"**- We are local
+**Connecting local customers with trusted service providers**
 
-A new Flutter project.
+A Flutter mobile app connecting customers with local service providers.  
+Student project by **Rishitha**.
 
-## Getting Started
+## Features
+- View Service Category list
+- Browse available local services
+- Select any vendor, view profile
+- Post needs (for customers)
+- Accept needs(for vendors)
+- Vendor availability & chat, call, ratings
+- See current Offers, availability of vendors
+- Elderly-led, Student-led, Women-led and many supportive badges
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Website / Demo
+Check the live demo here:
+My App Website: https://localservicesapp-9cc3e.web.app/
