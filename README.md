@@ -1,6 +1,6 @@
 # My Local Services App:
-**"VR Local"**- We are local
-**Connecting local customers with trusted service providers**
+**"VR Local"**- **We are local**
+[Connecting local customers with trusted service providers]
 
 A Flutter mobile app connecting customers with local service providers.  
 Student project by **Rishitha**.
