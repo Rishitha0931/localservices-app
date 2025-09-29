@@ -1,4 +1,4 @@
-# My Local Services App:
+# VR Local Services App:
 **"VR Local"**- **We are local**
 [Connecting local customers with trusted service providers]
 
