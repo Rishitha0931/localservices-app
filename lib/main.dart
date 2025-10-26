@@ -25,7 +25,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 //import 'package:permission_handler/permission_handler.dart';
 
-
 // ✅ Global Variables (keep them exactly as they are)
 String customerName = '';
 String customerAge = '';
@@ -99,18 +98,18 @@ class AppLanguage {
 }
 
 //Future<void> requestPermissions() async {
- // await [
-   // Permission.camera,
-   // Permission.storage,
-  //  Permission.location,
-  //].request();
+// await [
+// Permission.camera,
+// Permission.storage,
+//  Permission.location,
+//].request();
 //}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
- // ✅ Request permissions first
- // await requestPermissions();
-  
+  // ✅ Request permissions first
+  // await requestPermissions();
+
   // ✅ Firebase init for both web and mobile
   if (kIsWeb) {
     await Firebase.initializeApp(
@@ -313,55 +312,56 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
     _particleController.dispose();
     super.dispose();
   }
-void _goNext() async {
-  User? user = FirebaseAuth.instance.currentUser;
 
-  if (user != null) {
-    // Already logged in → fetch user role from Firestore
-    final docCustomer = await FirebaseFirestore.instance
-        .collection('customers')
-        .doc(user.uid)
-        .get();
+  void _goNext() async {
+    User? user = FirebaseAuth.instance.currentUser;
 
-    final docVendor = await FirebaseFirestore.instance
-        .collection('vendors')
-        .doc(user.uid)
-        .get();
+    if (user != null) {
+      // Already logged in → fetch user role from Firestore
+      final docCustomer = await FirebaseFirestore.instance
+          .collection('customers')
+          .doc(user.uid)
+          .get();
 
-    bool isCustomer = false;
-    bool isVendorLoggedInLocal = false;
-    Map<String, dynamic> vendorData = {};
+      final docVendor = await FirebaseFirestore.instance
+          .collection('vendors')
+          .doc(user.uid)
+          .get();
 
-    if (docCustomer.exists) {
-      isCustomer = true;
-    } else if (docVendor.exists) {
-      isVendorLoggedInLocal = true;
-      vendorData = {
-        'vendorId': docVendor['uid'],
-        'name': docVendor['name'] ?? '',
-        // add more minimal fields if needed
-      };
-    }
+      bool isCustomer = false;
+      bool isVendorLoggedInLocal = false;
+      Map<String, dynamic> vendorData = {};
 
-    // Navigate directly to CategoriesPage
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => CategoriesPage(
-          isCustomer: isCustomer,
-          isVendorLoggedIn: isVendorLoggedInLocal,
-          vendor: vendorData,
+      if (docCustomer.exists) {
+        isCustomer = true;
+      } else if (docVendor.exists) {
+        isVendorLoggedInLocal = true;
+        vendorData = {
+          'vendorId': docVendor['uid'],
+          'name': docVendor['name'] ?? '',
+          // add more minimal fields if needed
+        };
+      }
+
+      // Navigate directly to CategoriesPage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CategoriesPage(
+            isCustomer: isCustomer,
+            isVendorLoggedIn: isVendorLoggedInLocal,
+            vendor: vendorData,
+          ),
         ),
-      ),
-    );
-  } else {
-    // Not logged in → normal intro flow
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const IntroPage()),
-    );
+      );
+    } else {
+      // Not logged in → normal intro flow
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const IntroPage()),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -457,19 +457,19 @@ void _goNext() async {
                           ],
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child:ElevatedButton(
- onPressed: _goNext, 
-  style: ElevatedButton.styleFrom(
-    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
-    ),
-    backgroundColor: Colors.white,
-    foregroundColor: Colors.teal[800],
-  ),
-  child: const Text('Get Started!'),
-),
-
+                        child: ElevatedButton(
+                          onPressed: _goNext,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.teal[800],
+                          ),
+                          child: const Text('Get Started!'),
+                        ),
                       );
                     },
                   ),
@@ -711,6 +711,7 @@ class _WelcomeOptionsPageState extends State<WelcomeOptionsPage>
     );
   }
 }
+
 /// ✅ 3. CUSTOMER INFO PAGE
 class CustomerSignUpPage extends StatefulWidget {
   const CustomerSignUpPage({super.key});
@@ -806,10 +807,8 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
   // ✅ Centralized navigation for first login / profile completion
   Future<void> _goNext() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final doc = await FirebaseFirestore.instance
-        .collection('customers')
-        .doc(uid)
-        .get();
+    final doc =
+        await FirebaseFirestore.instance.collection('customers').doc(uid).get();
     final data = doc.data() ?? {};
 
     if (!mounted) return;
@@ -978,10 +977,8 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
   // ✅ Centralized navigation for first login / profile completion
   Future<void> _goNext() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final doc = await FirebaseFirestore.instance
-        .collection('customers')
-        .doc(uid)
-        .get();
+    final doc =
+        await FirebaseFirestore.instance.collection('customers').doc(uid).get();
     final data = doc.data() ?? {};
 
     if (!mounted) return;
@@ -1042,7 +1039,9 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
   }
 }
 
-//VENDOR REGISTRATION PAGE
+//// VENDOR REGISTRATION PAGE
+
+// VENDOR REGISTRATION PAGE
 
 class VendorRegistrationPage extends StatefulWidget {
   const VendorRegistrationPage({super.key});
@@ -1067,6 +1066,65 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
   bool isLogin = false;
   bool isLoading = false;
 
+  List<String> serviceCategories = [
+    '🧺Laundry',
+    '👔Ironing',
+    '🎁Handmade Gifts',
+    '🎵Music Class',
+    'Mehendi',
+    '💆‍♀Beauty & Wellness',
+    '📸Photography',
+    '💡Electricians',
+    '🔧Mechanics',
+    '🧹Cleaning Services',
+    '🎂Baking',
+    '🪴Gardening',
+    '🖥Computer Repair',
+    '🚚Packing & Moving',
+    '📦Delivery Services',
+    '🧘Yoga & Fitness',
+    '📚Tutor',
+    '💃Dance Class',
+    '🥋Karate',
+    '🪡Tailor',
+    'Other',
+  ];
+
+  final otherServiceController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadServices();
+  }
+
+  Future<void> _loadServices() async {
+    final snap =
+        await FirebaseFirestore.instance.collection('serviceList').get();
+    final fetched = snap.docs.map((d) => d.id).toList();
+    setState(() {
+      serviceCategories = [
+        ...{...serviceCategories, ...fetched}
+      ];
+    });
+  }
+
+  Future<void> _addNewService(String newService) async {
+    await FirebaseFirestore.instance
+        .collection('serviceList')
+        .doc(newService)
+        .set({'timestamp': Timestamp.now()});
+
+    setState(() {
+      // Add new service and remove "Other" if it exists
+      serviceCategories = [
+        ...serviceCategories.where((s) => s != 'Other'),
+        newService
+      ];
+      selectedCategory = newService;
+    });
+  }
+
   Future<void> _registerVendor() async {
     if (nameController.text.isEmpty ||
         selectedCategory == null ||
@@ -1078,7 +1136,6 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
       return;
     }
 
-    // ✅ Validate phone number here
     if (phoneController.text.isEmpty ||
         phoneController.text.length != 10 ||
         !RegExp(r'^[0-9]{10}$').hasMatch(phoneController.text)) {
@@ -1086,8 +1143,9 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
         const SnackBar(
             content: Text('Please enter a valid 10-digit phone number')),
       );
-      return; // stop registration if invalid
+      return;
     }
+
     setState(() => isLoading = true);
     try {
       final userCredential =
@@ -1095,18 +1153,37 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-
       final uid = userCredential.user!.uid;
 
-      // ✅ Save with BOTH your emoji keys AND plain keys so dashboard reads them reliably
+      // ✅ Handle "Other" properly
+      String finalCategory = selectedCategory!;
+      if (finalCategory == 'Other') {
+        final enteredService = otherServiceController.text.trim();
+        if (enteredService.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please enter a new service name')),
+          );
+          setState(() => isLoading = false);
+          return;
+        }
+
+        // ✅ Add new service to serviceList collection
+        await FirebaseFirestore.instance
+            .collection('serviceList')
+            .doc(enteredService)
+            .set({'timestamp': Timestamp.now()});
+
+        // ✅ Make this new service the vendor’s category
+        finalCategory = enteredService;
+      }
+
+      // ✅ Vendor data (ensuring category & name are never null)
       final data = {
-        // ---- your original emoji keys ----
         '👤name': nameController.text.trim(),
-        // Add to both emoji and plain keys
         '📞phone': phoneController.text.trim(),
         'phone': phoneController.text.trim(),
-
-        '📦category': selectedCategory,
+        '📦category': finalCategory,
+        'category': finalCategory, // important for VendorListPage
         '🌏area': areaController.text.trim(),
         '📍fullAddress': addressController.text.trim(),
         '💵priceRange': priceController.text.trim(),
@@ -1114,27 +1191,22 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
         '🕒generalTiming': timingController.text.trim(),
         '⏱️specialTiming': specialTimingController.text.trim(),
         '✉️email': emailController.text.trim(),
-
-        // ---- plain, normalized keys (for dashboard/use later) ----
-        'name': nameController.text.trim(),
-        'category': selectedCategory,
-        'area': areaController.text.trim(),
-        'fullAddress': addressController.text.trim(),
-        'priceRange': priceController.text.trim(),
-        'availableDays': availableDaysController.text.trim(),
-        'generalTiming': timingController.text.trim(),
-        'specialTiming': specialTimingController.text.trim(),
-        'email': emailController.text.trim(),
-        // Convenience keys some pages expect:
-        'service': selectedCategory,
+        'service': finalCategory,
         'location': areaController.text.trim(),
-
-        // meta
         'uid': uid,
         'timestamp': Timestamp.now(),
       };
 
+      // ✅ Save vendor info
       await FirebaseFirestore.instance.collection('vendors').doc(uid).set(data);
+
+      // ✅ Save under serviceList/{service}/vendors
+      await FirebaseFirestore.instance
+          .collection('serviceList')
+          .doc(finalCategory)
+          .collection('vendors')
+          .doc(uid)
+          .set(data);
 
       _navigateToDashboard();
     } on FirebaseAuthException catch (e) {
@@ -1153,14 +1225,12 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
       );
       return;
     }
-
     setState(() => isLoading = true);
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-
       _navigateToDashboard();
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -1173,7 +1243,6 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
 
   void _navigateToDashboard() {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    // Pass at least uid; dashboard will fetch full, authoritative data.
     final vendorData = {
       'uid': uid,
       'name': nameController.text,
@@ -1216,62 +1285,32 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 value: selectedCategory,
-                items: const [
-                  DropdownMenuItem(
-                      value: '🧺Laundry', child: Text('🧺Laundry')),
-                  DropdownMenuItem(
-                      value: '👔Ironing', child: Text('👔Ironing')),
-                  DropdownMenuItem(
-                      value: '🎁Handmade Gifts',
-                      child: Text('🎁Handmade Gifts')),
-                  DropdownMenuItem(
-                      value: '🎵Music Class', child: Text('🎵Music Class')),
-                  DropdownMenuItem(value: 'Mehendi', child: Text('Mehendi')),
-                  DropdownMenuItem(
-                      value: '💆‍♀Beauty & Wellness',
-                      child: Text('💆‍♀Beauty & Wellness')),
-                  DropdownMenuItem(
-                      value: '📸Photography', child: Text('📸Photography')),
-                  DropdownMenuItem(
-                      value: '💡Electricians', child: Text('💡Electricians')),
-                  DropdownMenuItem(
-                      value: '🔧Mechanics', child: Text('🔧Mechanics')),
-                  DropdownMenuItem(
-                      value: '🧹Cleaning Services',
-                      child: Text('🧹Cleaning Services')),
-                  DropdownMenuItem(value: '🎂Baking', child: Text('🎂Baking')),
-                  DropdownMenuItem(
-                      value: '🪴Gardening', child: Text('🪴Gardening')),
-                  DropdownMenuItem(
-                      value: '🖥Computer Repair',
-                      child: Text('🖥Computer Repair')),
-                  DropdownMenuItem(
-                      value: '🚚Packing & Moving',
-                      child: Text('🚚Packing & Moving')),
-                  DropdownMenuItem(
-                      value: '📦Delivery Services',
-                      child: Text('📦Delivery Services')),
-                  DropdownMenuItem(
-                      value: '🧘Yoga & Fitness',
-                      child: Text('🧘Yoga & Fitness')),
-                  DropdownMenuItem(value: '📚Tutor', child: Text('📚Tutor')),
-                  DropdownMenuItem(
-                      value: '💃Dance Class', child: Text('💃Dance Class')),
-                  DropdownMenuItem(value: '🥋Karate', child: Text('🥋Karate')),
-                  DropdownMenuItem(value: '🪡Tailor', child: Text('🪡Tailor')),
-                ],
-                onChanged: (value) => setState(() => selectedCategory = value),
+                items: serviceCategories
+                    .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() => selectedCategory = value);
+                },
                 decoration: const InputDecoration(labelText: '📦Service Type'),
               ),
+              if (selectedCategory == 'Other') ...[
+                const SizedBox(height: 10),
+                TextField(
+                  controller: otherServiceController,
+                  decoration: const InputDecoration(
+                    labelText: '✳️Enter New Service',
+                    hintText: 'Type your service name',
+                  ),
+                ),
+              ],
               const SizedBox(height: 10),
               TextField(
-                  controller: areaController,
-                  decoration: const InputDecoration(
-                      labelText: '🌏Area',
-                      hintText: 'e.g. banjara hills, hyderabad')),
+                controller: areaController,
+                decoration: const InputDecoration(
+                    labelText: '🌏Area', hintText: 'e.g. Banjara Hills'),
+              ),
               const SizedBox(height: 10),
               TextField(
                   controller: addressController,
@@ -1287,19 +1326,19 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
                   controller: availableDaysController,
                   decoration: const InputDecoration(
                       labelText: '🗓️Available Days',
-                      hintText: 'e.g. Monday-Saturday')),
+                      hintText: 'e.g. Monday–Saturday')),
               const SizedBox(height: 10),
               TextField(
                   controller: timingController,
                   decoration: const InputDecoration(
                       labelText: '🕒General Timing',
-                      hintText: 'e.g. 9:00 am - 6:00 pm')),
+                      hintText: 'e.g. 9am – 6pm')),
               const SizedBox(height: 10),
               TextField(
                   controller: specialTimingController,
                   decoration: const InputDecoration(
                       labelText: '⏱️Special Timing',
-                      hintText: 'e.g. Sunday-2:00am-4:00pm')),
+                      hintText: 'e.g. Sunday 2pm–4pm')),
               const SizedBox(height: 10),
             ],
             TextField(
@@ -1338,26 +1377,31 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
   }
 }
 
-//CategoriesPage
-class CategoriesPage extends StatelessWidget {
+// CategoriesPage.dart
+class CategoriesPage extends StatefulWidget {
   final bool isCustomer;
-  final bool isVendorLoggedIn; // ✅ clear single variable name
-  final Map<String, dynamic> vendor; // keeping as you had it
+  final bool isVendorLoggedIn;
+  final Map<String, dynamic> vendor;
 
   const CategoriesPage({
     super.key,
     required this.isCustomer,
-    required this.isVendorLoggedIn, // ✅ use the same name everywhere
+    required this.isVendorLoggedIn,
     required this.vendor,
   });
 
-  final List<String> categories = const [
+  @override
+  State<CategoriesPage> createState() => _CategoriesPageState();
+}
+
+class _CategoriesPageState extends State<CategoriesPage> {
+  final List<String> staticCategories = const [
     '🧺Laundry',
     '👔Ironing',
     '🎁Handmade Gifts',
     '🎵Music Class',
     'Mehendi',
-    ' 💆‍♀️Beauty & Wellness',
+    '💆‍♀️Beauty & Wellness',
     '📸Photography',
     '💡Electricians',
     '🔧Mechanics',
@@ -1374,17 +1418,110 @@ class CategoriesPage extends StatelessWidget {
     '🪡Tailor',
   ];
 
+  List<String> allCategories = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    try {
+      final vendorSnapshot = await FirebaseFirestore.instance
+          .collection('vendors')
+          .where('category', isNotEqualTo: null)
+          .get();
+
+      final vendorCategories = vendorSnapshot.docs
+          .map((doc) => doc.data()['category']?.toString() ?? '')
+          .where((cat) =>
+              cat.isNotEmpty &&
+              !staticCategories.contains(cat) &&
+              cat != 'Other')
+          .toSet()
+          .toList();
+
+      final serviceSnap =
+          await FirebaseFirestore.instance.collection('serviceList').get();
+
+      final serviceCategories = serviceSnap.docs
+          .map((doc) => doc.id)
+          .where((cat) =>
+              cat.isNotEmpty &&
+              !staticCategories.contains(cat) &&
+              cat != 'Other')
+          .toSet()
+          .toList();
+
+      final allCats = [
+        ...staticCategories,
+        ...vendorCategories,
+        ...serviceCategories
+      ];
+
+      setState(() {
+        allCategories = allCats.toSet().toList(); // remove duplicates
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching categories: $e");
+      setState(() {
+        allCategories = [...staticCategories];
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    // ✅ 1️⃣ Responsive number of blocks
+    int crossAxisCount;
+    if (screenWidth >= 1200) {
+      crossAxisCount = 6;
+    } else if (screenWidth >= 900) {
+      crossAxisCount = 5;
+    } else if (screenWidth >= 600) {
+      crossAxisCount = 3;
+    } else if (screenWidth >= 400) {
+      crossAxisCount = 3;
+    } else {
+      crossAxisCount = 2;
+    }
+
+    // ✅ Increased block height: smaller screens get taller blocks
+    double childAspectRatio;
+    if (screenWidth >= 600) {
+      childAspectRatio = 3 / 2; // desktop/tablet
+    } else if (screenWidth >= 400) {
+      childAspectRatio = 3 / 1.5; // phone
+    } else {
+      childAspectRatio = 3 / 1.3; // small phone
+    }
+
+    // ✅ 3️⃣ Responsive text size
+    double textSize;
+    if (screenWidth >= 600) {
+      textSize = 14;
+    } else if (screenWidth >= 400) {
+      textSize = 12;
+    } else {
+      textSize = 10;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr(context, 'categories')),
+        title: const Text('Categories'),
         backgroundColor: const Color.fromARGB(255, 255, 153, 51),
         actions: [
           IconButton(
-            icon:
-                Icon(isCustomer ? Icons.add_circle_outline : Icons.assignment),
-            tooltip: isCustomer ? 'Post a Need' : 'Availability',
+            icon: Icon(
+              widget.isCustomer ? Icons.add_circle_outline : Icons.assignment,
+            ),
+            tooltip: widget.isCustomer ? 'Post a Need' : 'Availability',
             onPressed: () {
               final user = FirebaseAuth.instance.currentUser;
               if (user == null) {
@@ -1397,14 +1534,12 @@ class CategoriesPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => isCustomer
+                  builder: (context) => widget.isCustomer
                       ? PostNeedPage(
                           isCustomer: true,
                           customerName: user.displayName ?? "Unknown",
                         )
-                      : AvailableNeedsPage(
-                          vendorId: user.uid,
-                        ),
+                      : AvailableNeedsPage(vendorId: user.uid),
                 ),
               );
             },
@@ -1416,8 +1551,8 @@ class CategoriesPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => isVendorLoggedIn
-                      ? VendorDashboardPage(vendor: vendor)
+                  builder: (context) => widget.isVendorLoggedIn
+                      ? VendorDashboardPage(vendor: widget.vendor)
                       : const CustomerDashboardPage(),
                 ),
               );
@@ -1425,56 +1560,57 @@ class CategoriesPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: categories.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            childAspectRatio: 3 / 2,
-          ),
-          itemBuilder: (context, index) {
-            return BounceInWidget(
-              delayMilliseconds: index * 150,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => VendorListPage(
-                        category: categories[index],
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(12.0),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: allCategories.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount, // ✅ responsive
+                  mainAxisSpacing: 12, // ✅ spacing between blocks
+                  crossAxisSpacing: 12,
+                  childAspectRatio: childAspectRatio, // ✅ responsive height
+                ),
+                itemBuilder: (context, index) {
+                  final category = allCategories[index];
+                  return BounceInWidget(
+                    delayMilliseconds: index * 150,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => VendorListPage(category: category),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 230, 204),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.teal, width: 1),
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 6), // ✅ padding for text
+                        child: Text(
+                          category,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: textSize, // ✅ responsive text size
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   );
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 230, 204),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.teal, width: 1),
-                  ),
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    categories[index],
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
               ),
-            );
-          },
-        ),
-      ),
-      // ✅ Floating button visible ONLY for vendors
-      floatingActionButton: isVendorLoggedIn
+            ),
+      floatingActionButton: widget.isVendorLoggedIn
           ? Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
@@ -1499,7 +1635,7 @@ class CategoriesPage extends StatelessWidget {
 }
 
 /// ✅ 5. VENDOR DASHBOARD WITH EDIT OPTION
-//DOOOPPEEEEEEE
+
 class VendorDashboardPage extends StatefulWidget {
   final Map<String, dynamic> vendor;
 
@@ -1750,39 +1886,41 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
                       .toggleTheme(value);
                 },
               ),
-             ListTile(
-  leading: const Icon(Icons.logout),
-  title: Text(tr(context, 'logout')),
-  onTap: () async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Confirm Logout"),
-        content: const Text("Are you sure you want to logout?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false), // Cancel
-            child: const Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true), // Logout
-            child: const Text("Logout"),
-          ),
-        ],
-      ),
-    );
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: Text(tr(context, 'logout')),
+                onTap: () async {
+                  final confirm = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Confirm Logout"),
+                      content: const Text("Are you sure you want to logout?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () =>
+                              Navigator.pop(context, false), // Cancel
+                          child: const Text("Cancel"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () =>
+                              Navigator.pop(context, true), // Logout
+                          child: const Text("Logout"),
+                        ),
+                      ],
+                    ),
+                  );
 
-    if (confirm == true) {
-      await FirebaseAuth.instance.signOut();
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const FirstPage()),
-        );
-      }
-    }
-  },
-),
+                  if (confirm == true) {
+                    await FirebaseAuth.instance.signOut();
+                    if (mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => const FirstPage()),
+                      );
+                    }
+                  }
+                },
+              ),
 
               ListTile(
                 leading: const Icon(Icons.share),
@@ -1790,11 +1928,11 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
                 onTap: () async {
                   Navigator.pop(context);
                   await Future.delayed(const Duration(milliseconds: 300));
-                 // await Share.share(
-                   // "Im using this free Local Services App to grow my business and reach more customers in my area. You should definitely try it – it's free and useful!"
-                   // "నేను ఈ ఫ్రీ లోకల్ సర్వీసెస్ యాప్ వాడి, నా ఏరియాలో కస్టమర్లను పెంచుకోగలిగాను. మీరు కూడా తప్పకుండా ప్రయత్నించండి – ఉచితం, ఉపయోగకరం!"
-                   // "Install Now! using below link-'myapp.in'",
-                 // );
+                  // await Share.share(
+                  // "Im using this free Local Services App to grow my business and reach more customers in my area. You should definitely try it – it's free and useful!"
+                  // "నేను ఈ ఫ్రీ లోకల్ సర్వీసెస్ యాప్ వాడి, నా ఏరియాలో కస్టమర్లను పెంచుకోగలిగాను. మీరు కూడా తప్పకుండా ప్రయత్నించండి – ఉచితం, ఉపయోగకరం!"
+                  // "Install Now! using below link-'myapp.in'",
+                  // );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -1895,7 +2033,6 @@ Widget _buildDetailCard(BuildContext context, Map<String, dynamic> vendorData,
 }
 
 /// ✅ 6. EDIT VENDOR PAGE
-
 class VendorEditPage extends StatefulWidget {
   final String docId; // ✅ This comes from vendor list page
   const VendorEditPage({super.key, required this.docId});
@@ -1905,13 +2042,23 @@ class VendorEditPage extends StatefulWidget {
 }
 
 class _VendorEditPageState extends State<VendorEditPage> {
-  final List<String> Service = [
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController areaController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController availableDaysController = TextEditingController();
+  final TextEditingController timingController = TextEditingController();
+  final TextEditingController specialTimingController = TextEditingController();
+  final TextEditingController otherServiceController = TextEditingController();
+
+  List<String> serviceCategories = [
     '🧺Laundry',
     '👔Ironing',
     '🎁Handmade Gifts',
     '🎵Music Class',
     'Mehendi',
-    ' 💆‍♀️Beauty & Wellness',
+    '💆‍♀️Beauty & Wellness',
     '📸Photography',
     '💡Electricians',
     '🔧Mechanics',
@@ -1926,25 +2073,28 @@ class _VendorEditPageState extends State<VendorEditPage> {
     '💃Dance Class',
     '🥋Karate',
     '🪡Tailor',
+    'Other',
   ];
 
-  //final List<String> Blanks = ["", "", "", "", ""]; // ✅ unchanged
-
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController areaController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-  final TextEditingController availableDaysController = TextEditingController();
-  final TextEditingController timingController = TextEditingController();
-  final TextEditingController specialTimingController = TextEditingController();
-
   String? selectedService;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    _loadServices();
     _loadVendorData();
+  }
+
+  Future<void> _loadServices() async {
+    final snap =
+        await FirebaseFirestore.instance.collection('serviceList').get();
+    final fetched = snap.docs.map((d) => d.id).toList();
+    setState(() {
+      serviceCategories = [
+        ...{...serviceCategories, ...fetched}
+      ];
+    });
   }
 
   Future<void> _loadVendorData() async {
@@ -1955,36 +2105,70 @@ class _VendorEditPageState extends State<VendorEditPage> {
 
     if (doc.exists) {
       var data = doc.data()!;
-      nameController.text = data['name'] ?? '';
-      emailController.text = data['email'] ?? '';
-      //selectedService = data['service'] ?? Service.first;
-      areaController.text = data['area'] ?? '';
-      addressController.text = data['fullAddress'] ?? '';
-      priceController.text = data['priceRange'] ?? '';
-      availableDaysController.text = data['availableDays'] ?? '';
-      timingController.text = data['generalTiming'] ?? '';
-      specialTimingController.text = data['specialTiming'] ?? '';
+
+      // ✅ Emoji-safe approach for all fields
+      nameController.text = data['👤name'] ?? data['name'] ?? '';
+      emailController.text = data['✉️email'] ?? data['email'] ?? '';
+      selectedService =
+          data['service'] ?? data['📦category'] ?? serviceCategories.first;
+      areaController.text = data['🌏area'] ?? data['area'] ?? '';
+      addressController.text =
+          data['📍fullAddress'] ?? data['fullAddress'] ?? '';
+      priceController.text = data['💵priceRange'] ?? data['priceRange'] ?? '';
+
+      final availableDaysList =
+          data['📅availableDays'] ?? data['availableDays'] ?? [];
+      if (availableDaysList is List) {
+        availableDaysController.text = availableDaysList.join(', ');
+      } else {
+        availableDaysController.text = availableDaysList.toString();
+      }
+
+      timingController.text =
+          data['🕒generalTiming'] ?? data['generalTiming'] ?? '';
+      specialTimingController.text =
+          data['⏱️specialTiming'] ?? data['specialTiming'] ?? '';
+
       setState(() {});
     }
   }
 
   Future<void> _updateVendor() async {
+    String finalService = selectedService!;
+    if (finalService == 'Other') {
+      finalService = otherServiceController.text.trim();
+      if (finalService.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter a new service name')),
+        );
+        return;
+      }
+
+      await FirebaseFirestore.instance
+          .collection('serviceList')
+          .doc(finalService)
+          .set({'timestamp': Timestamp.now()});
+    }
+
     await FirebaseFirestore.instance
         .collection('vendors')
-        .doc(widget.docId) // ✅ update by doc.id
+        .doc(widget.docId)
         .update({
-      'name': nameController.text,
-      'email': emailController.text,
-      //'service': selectedService ?? Service.first,
-      'area': areaController.text,
-      'fullAddress': addressController.text,
-      'priceRange': priceController.text,
-      'availableDays': availableDaysController.text,
-      'generalTiming': timingController.text,
-      'specialTiming': specialTimingController.text,
+      // Name and email are read-only but still kept in Firestore
+      '👤name': nameController.text,
+      '✉️email': emailController.text,
+      'service': finalService,
+      '📦category': finalService,
+      '🌏area': areaController.text,
+      '📍fullAddress': addressController.text,
+      '💵priceRange': priceController.text,
+      '📅availableDays':
+          availableDaysController.text.split(',').map((e) => e.trim()).toList(),
+      '🕒generalTiming': timingController.text,
+      '⏱️specialTiming': specialTimingController.text,
     });
 
-    Navigator.pop(context); // go back after save
+    Navigator.pop(context);
   }
 
   @override
@@ -1999,31 +2183,42 @@ class _VendorEditPageState extends State<VendorEditPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
+              // ✅ Name (read-only)
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(labelText: 'Name'),
+                readOnly: true,
               ),
               const SizedBox(height: 10),
+              // ✅ Email (read-only)
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
+                readOnly: true,
               ),
               const SizedBox(height: 10),
-              //DropdownButtonFormField<String>(
-              //value: selectedService,
-              //decoration: const InputDecoration(labelText: 'Service'),
-              //items: Service.map((service) {
-              // return DropdownMenuItem(
-              //value: service,
-              //child: Text(service),
-              // );
-              //}).toList(),
-              //onChanged: (value) {
-              //setState(() {
-              //selectedService = value;
-//});
-              //},
-              // ),
+              // Service dropdown
+              DropdownButtonFormField<String>(
+                value: selectedService,
+                decoration: const InputDecoration(labelText: 'Service'),
+                items: serviceCategories.map((service) {
+                  return DropdownMenuItem(
+                    value: service,
+                    child: Text(service),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedService = value;
+                  });
+                },
+              ),
+              if (selectedService == 'Other')
+                TextField(
+                  controller: otherServiceController,
+                  decoration:
+                      const InputDecoration(labelText: 'Enter new service'),
+                ),
               const SizedBox(height: 20),
               TextField(
                   controller: areaController,
@@ -2463,21 +2658,21 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
                   await Future.delayed(const Duration(milliseconds: 300));
 
                   // Share the message
-                 // await Share.share(
+                  // await Share.share(
                   //  " Discover Services Around You - Fast, Easy, and Free!"
                   //  "Use our free Local Services App to:"
                   //  "⭐Find trusted vendors in your area for tailoring, snacks, tuition & more"
-                    //"📞Chat or call vendors directly - no middlemen"
-                   // "🤝Support local talent around you"
-                   // "Try now - it's 100% free and made for your convenience!"
-                   /// "మీ ప్రదేశంలోని సేవలు - తేలికగా, వేగంగా, ఉచితంగా!"
-                    //"ఈ ఉచిత స్థానిక సేవల యాప్ ద్వారా:"
-                   // "⭐ మీ ప్రదేశంలోని నమ్మకమైన సేవలందించే వారిని కనుగొనండి"
-                   // "📞 వారితో నేరుగా చాట్ చేయండి లేదా కాల్ చేయండి"
-                    //"🤝 మీ చుట్టూ ఉన్న స్థానిక ప్రతిభను ప్రోత్సహించండి"
-                   // "ఇప్పుడు ప్రయత్నించండి - ఇది పూర్తిగా ఉచితం!"
-                    ////"Install Now! using below link-'myapp.in'",
-                 // );
+                  //"📞Chat or call vendors directly - no middlemen"
+                  // "🤝Support local talent around you"
+                  // "Try now - it's 100% free and made for your convenience!"
+                  /// "మీ ప్రదేశంలోని సేవలు - తేలికగా, వేగంగా, ఉచితంగా!"
+                  //"ఈ ఉచిత స్థానిక సేవల యాప్ ద్వారా:"
+                  // "⭐ మీ ప్రదేశంలోని నమ్మకమైన సేవలందించే వారిని కనుగొనండి"
+                  // "📞 వారితో నేరుగా చాట్ చేయండి లేదా కాల్ చేయండి"
+                  //"🤝 మీ చుట్టూ ఉన్న స్థానిక ప్రతిభను ప్రోత్సహించండి"
+                  // "ఇప్పుడు ప్రయత్నించండి - ఇది పూర్తిగా ఉచితం!"
+                  ////"Install Now! using below link-'myapp.in'",
+                  // );
 
                   // Navigate to Thank You page
                   Navigator.push(
@@ -2487,34 +2682,33 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
                   );
                 },
               ),
-             ListTile(
-  leading: const Icon(Icons.logout),
-  title: const Text('Logout'),
-  onTap: () async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Confirm Logout"),
-        content: const Text("Are you sure you want to logout?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text("Logout"),
-          ),
-        ],
-      ),
-    );
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
+                onTap: () async {
+                  final confirm = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Confirm Logout"),
+                      content: const Text("Are you sure you want to logout?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text("Cancel"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text("Logout"),
+                        ),
+                      ],
+                    ),
+                  );
 
-    if (confirm == true) {
-      await handleLogout();
-    }
-  },
-),
-
+                  if (confirm == true) {
+                    await handleLogout();
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -2722,11 +2916,11 @@ class VendorListPage extends StatefulWidget {
 class _VendorListPageState extends State<VendorListPage> {
   List<Map<String, dynamic>> filteredVendors = [];
 
-//  @override
-//  void initState() {
-//    super.initState();
-//    fetchVendorsFromFirestore();
-//  }
+  @override
+  void initState() {
+    super.initState();
+    fetchVendorsFromFirestore();
+  }
 
   Future<void> fetchVendorsFromFirestore() async {
     try {
@@ -2735,21 +2929,27 @@ class _VendorListPageState extends State<VendorListPage> {
 
       final allVendors = snapshot.docs.map((doc) {
         return {
-          "docId": doc.id, // ✅ include Firestore docId
+          "docId": doc.id,
           ...doc.data() as Map<String, dynamic>,
         };
       }).toList();
 
-      // ✅ ADDED: remove soft-deleted vendors (deleted == true)
+      // Remove soft-deleted vendors
       final notDeleted =
           allVendors.where((vendor) => vendor['deleted'] != true).toList();
 
       // Filter by category
       final vendorsForCategory = notDeleted
           .where((vendor) =>
-              vendor['category'] != null &&
-              vendor['category'] == widget.category)
+              (vendor['category'] ?? vendor['📦category']) == widget.category)
           .toList();
+
+      // Sort by average rating if available
+      vendorsForCategory.sort((a, b) {
+        final avgA = (a['totalRating'] ?? 0) / ((a['ratingCount'] ?? 1));
+        final avgB = (b['totalRating'] ?? 0) / ((b['ratingCount'] ?? 1));
+        return avgB.compareTo(avgA);
+      });
 
       setState(() {
         filteredVendors = vendorsForCategory;
@@ -2761,308 +2961,211 @@ class _VendorListPageState extends State<VendorListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Sort vendors by their avg rating (descending)
-    final sortedVendors = [...filteredVendors]..sort((a, b) {
-        final totalA = (a['totalRating'] ?? 0) as num;
-        final countA = (a['ratingCount'] ?? 0) as num;
-        final avgA = countA > 0 ? totalA / countA : 0.0;
-
-        final totalB = (b['totalRating'] ?? 0) as num;
-        final countB = (b['ratingCount'] ?? 0) as num;
-        final avgB = countB > 0 ? totalB / countB : 0.0;
-
-        // Higher rating first
-        return avgB.compareTo(avgA);
-      });
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Vendors - ${widget.category}'),
         backgroundColor: const Color.fromARGB(255, 255, 183, 102),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            // 🔹 CHANGED: wrapped ListView in StreamBuilder for live updates
-            child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('vendors').snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      body: filteredVendors.isEmpty
+          ? const Center(child: Text('No vendors found'))
+          : ListView.builder(
+              itemCount: filteredVendors.length,
+              itemBuilder: (context, index) {
+                final vendor = filteredVendors[index];
 
-                // 🔹 Prepare vendor list locally
-                final allVendors = snapshot.data!.docs.map((doc) {
-                  return {
-                    "docId": doc.id,
-                    ...doc.data() as Map<String, dynamic>,
-                  };
-                }).toList();
+                final vendorName =
+                    vendor['name'] ?? vendor['👤name'] ?? 'Unnamed';
+                final service = vendor['service'] ??
+                    vendor['category'] ??
+                    vendor['📦category'] ??
+                    '';
+                final location = vendor['area'] ?? vendor['location'] ?? 'N/A';
+                final priceRange =
+                    vendor['priceRange'] ?? vendor['💵priceRange'] ?? 'N/A';
+                final displayLetter =
+                    vendorName.isNotEmpty ? vendorName[0].toUpperCase() : '?';
 
-                final notDeleted = allVendors
-                    .where((vendor) => vendor['deleted'] != true)
-                    .toList();
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: ListTile(
+                    leading: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 3,
+                              color: (() {
+                                final sc = (vendor['statusColor'] ?? '')
+                                    .toString()
+                                    .toLowerCase();
+                                if (sc == 'green') return Colors.green;
+                                if (sc == 'red') return Colors.red;
+                                if (sc == 'orange') return Colors.orange;
+                                if (sc == 'blue') return Colors.blue;
 
-                final filteredVendorsStream = notDeleted
-                    .where((vendor) =>
-                        vendor['category'] != null &&
-                        vendor['category'] == widget.category)
-                    .toList();
-
-                // 🔹 Sort by average rating descending
-                filteredVendorsStream.sort((a, b) {
-                  final totalA = (a['totalRating'] ?? 0) as num;
-                  final countA = (a['ratingCount'] ?? 0) as num;
-                  final avgA = countA > 0 ? totalA / countA : 0.0;
-
-                  final totalB = (b['totalRating'] ?? 0) as num;
-                  final countB = (b['ratingCount'] ?? 0) as num;
-                  final avgB = countB > 0 ? totalB / countB : 0.0;
-
-                  return avgB.compareTo(avgA);
-                });
-
-                if (filteredVendorsStream.isEmpty) {
-                  return const Center(child: Text('No vendors found'));
-                }
-
-                return ListView.builder(
-                  itemCount: filteredVendorsStream.length,
-                  itemBuilder: (context, index) {
-                    var vendor = filteredVendorsStream[index];
-
-                    // ⭐ Everything below stays exactly as in your current code
-                    return Card(
-                      margin: const EdgeInsets.all(10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 3,
-                                  color: (() {
-                                    // 1) Prefer explicit color string if present (statusColor: "green"/"red"/"orange"/"blue")
-                                    final sc = (vendor['statusColor'] ?? '')
-                                        .toString()
-                                        .toLowerCase();
-                                    if (sc == 'green') return Colors.green;
-                                    if (sc == 'red') return Colors.red;
-                                    if (sc == 'orange') return Colors.orange;
-                                    if (sc == 'blue') return Colors.blue;
-
-                                    // 2) Otherwise, derive from the status label text (with or without emojis)
-                                    final s = (vendor['status'] ??
-                                            vendor['statusLabel'] ??
-                                            '')
-                                        .toString()
-                                        .toLowerCase();
-
-                                    // normalize (so emojis / punctuation don't break matching)
-                                    // we only rely on keywords:
-                                    if (s.contains('available') &&
-                                        !s.contains('not')) return Colors.green;
-                                    if (s.contains('not') &&
-                                        s.contains('available'))
-                                      return Colors.red;
-                                    if (s.contains('busy'))
-                                      return Colors.orange;
-                                    if (s.contains('offer')) return Colors.blue;
-
-                                    // 3) default
-                                    return Colors.grey;
-                                  })(),
-                                ),
-                              ),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.orange.shade200,
-                                child: Text(
-                                  (vendor['name'] != null &&
-                                          (vendor['name'] as String).isNotEmpty)
-                                      ? (vendor['name'] as String)
-                                          .substring(0, 1)
-                                          .toUpperCase()
-                                      : '?',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-
-                            // "OFFER" badge if special offer
-                            if (((vendor['status'] ??
+                                final s = (vendor['status'] ??
                                         vendor['statusLabel'] ??
                                         '')
                                     .toString()
-                                    .toLowerCase()
-                                    .contains('offer')) ||
-                                ((vendor['statusColor'] ?? '')
-                                        .toString()
-                                        .toLowerCase() ==
-                                    'blue'))
-                              Positioned(
-                                right: -2,
-                                bottom: -6,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: const Text(
-                                    'OFFER',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                    .toLowerCase();
+                                if (s.contains('available') &&
+                                    !s.contains('not')) return Colors.green;
+                                if (s.contains('not') &&
+                                    s.contains('available')) return Colors.red;
+                                if (s.contains('busy')) return Colors.orange;
+                                if (s.contains('offer')) return Colors.blue;
+                                return Colors.grey;
+                              })(),
+                            ),
+                          ),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.orange.shade200,
+                            child: Text(
+                              displayLetter,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        if (((vendor['status'] ?? vendor['statusLabel'] ?? '')
+                                .toString()
+                                .toLowerCase()
+                                .contains('offer')) ||
+                            ((vendor['statusColor'] ?? '')
+                                    .toString()
+                                    .toLowerCase() ==
+                                'blue'))
+                          Positioned(
+                            right: -2,
+                            bottom: -6,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: const Text(
+                                'OFFER',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                          ],
-                        ),
-                        title: Text(
-                          vendor['name'] ?? '',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (vendor['area'] != null &&
-                                vendor['area']!.isNotEmpty)
-                              Row(
-                                children: [
-                                  const Icon(Icons.location_on,
-                                      size: 16, color: Colors.grey),
-                                  const SizedBox(width: 4),
-                                  Text(vendor['area'] ?? ''),
-                                ],
-                              ),
-                            if (vendor['priceRange'] != null ||
-                                vendor['price'] != null)
-                              Row(
-                                children: [
-                                  const Icon(Icons.currency_rupee,
-                                      size: 16, color: Colors.grey),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                      '${vendor['priceRange'] ?? vendor['price']} onwards'),
-                                ],
-                              ),
-                            // ✅ Add this INSIDE children (not outside!)
-                            if (vendor['badges'] is List &&
-                                vendor['badges'].isNotEmpty)
-                              Wrap(
-                                spacing: 6,
-                                children: (vendor['badges'] as List)
-                                    .map((badge) => Chip(
-                                          label: Text(badge),
-                                          backgroundColor:
-                                              Colors.green.shade100,
-                                          labelStyle: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ))
-                                    .toList(),
-                              ),
-                          ],
-                        ),
-// ⭐ Compact rating badge with count
-                        trailing: StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('vendors')
-                              .doc(vendor['docId'])
-                              .collection('reviews')
-                              .snapshots(),
-                          builder: (context, reviewSnapshot) {
-                            double avgRating = 0;
-                            int reviewCount = 0;
-
-                            if (reviewSnapshot.hasData &&
-                                reviewSnapshot.data!.docs.isNotEmpty) {
-                              reviewCount = reviewSnapshot.data!.docs.length;
-
-                              final total =
-                                  reviewSnapshot.data!.docs.fold<double>(
-                                0,
-                                (sum, doc) =>
-                                    sum +
-                                    ((doc.data() as Map<String, dynamic>)[
-                                            'rating'] ??
-                                        0),
-                              );
-
-                              avgRating = total / reviewCount;
-                            }
-
-                            if (reviewCount == 0)
-                              return const SizedBox.shrink();
-
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.amber.shade600,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(Icons.star,
-                                      size: 14, color: Colors.white),
-                                  const SizedBox(width: 3),
-                                  Text(
-                                    avgRating.toStringAsFixed(1),
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    "($reviewCount)",
-                                    style: const TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VendorProfilePage(
-                                vendor: vendor,
-                              ),
                             ),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                          ),
+                      ],
+                    ),
+                    title: Text(
+                      vendorName,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (location != 'N/A')
+                          Row(
+                            children: [
+                              const Icon(Icons.location_on,
+                                  size: 16, color: Colors.grey),
+                              const SizedBox(width: 4),
+                              Text(location),
+                            ],
+                          ),
+                        if (priceRange != 'N/A')
+                          Row(
+                            children: [
+                              const Icon(Icons.currency_rupee,
+                                  size: 16, color: Colors.grey),
+                              const SizedBox(width: 4),
+                              Text('$priceRange onwards'),
+                            ],
+                          ),
+                      ],
+                    ),
+                    trailing: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('vendors')
+                          .doc(vendor['docId'])
+                          .collection('reviews')
+                          .snapshots(),
+                      builder: (context, reviewSnapshot) {
+                        double avgRating = 0;
+                        int reviewCount = 0;
+
+                        if (reviewSnapshot.hasData &&
+                            reviewSnapshot.data!.docs.isNotEmpty) {
+                          reviewCount = reviewSnapshot.data!.docs.length;
+                          final total = reviewSnapshot.data!.docs.fold<double>(
+                              0,
+                              (sum, doc) =>
+                                  sum +
+                                  ((doc.data()
+                                          as Map<String, dynamic>)['rating'] ??
+                                      0));
+                          avgRating = total / reviewCount;
+                        }
+
+                        if (reviewCount == 0) return const SizedBox.shrink();
+
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.amber.shade600,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.star,
+                                  size: 14, color: Colors.white),
+                              const SizedBox(width: 3),
+                              Text(
+                                avgRating.toStringAsFixed(1),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                "($reviewCount)",
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              VendorProfilePage(vendor: vendor),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),
-          ),
-        ],
-      ),
     );
   }
-} // ✅ SubmitReviewPage — MUST be above VendorProfilePage if in the same file
+}
+
+// ✅ SubmitReviewPage — MUST be above VendorProfilePage if in the same file
 // ✅ SubmitReviewPage — MUST be above VendorProfilePage if in the same file
 
 class SubmitReviewPage extends StatefulWidget {
@@ -3200,9 +3303,10 @@ class _SubmitReviewPageState extends State<SubmitReviewPage> {
 }
 
 // ✅ VendorProfilePage
-// ✅ VendorProfilePage
+//// ✅ VendorProfilePage
+/// ✅ VendorProfilePage
 class VendorProfilePage extends StatelessWidget {
-  final Map<String, dynamic> vendor; // ✅ change here
+  final Map<String, dynamic> vendor;
   final bool isVendorLoggedIn;
 
   const VendorProfilePage({
@@ -3216,27 +3320,34 @@ class VendorProfilePage extends StatelessWidget {
     final vendorOwnerId = vendor['uid'] ?? '';
     final currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
     final isOwnProfile = currentUserId == vendorOwnerId;
+
+    final vendorName = vendor['👤name'] ?? vendor['name'] ?? 'Unnamed';
+    final service = vendor['service'] ?? vendor['📦category'] ?? 'N/A';
+
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Profile'),
-          backgroundColor:
-              const Color.fromARGB(255, 255, 153, 51)), // strong saffron),
-      body: Padding(
+        title: const Text('Profile'),
+        backgroundColor: const Color.fromARGB(255, 255, 153, 51),
+      ),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Center(
-                child: CircleAvatar(
-                    radius: 40, child: Icon(Icons.person, size: 40))),
+              child: CircleAvatar(
+                radius: 40,
+                child: Icon(Icons.person, size: 40),
+              ),
+            ),
             const SizedBox(height: 20),
-            Text('Vendor Name: ${vendor['name']}',
+            Text('Vendor Name: $vendorName',
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-            Text('Service: ${vendor['service']}'),
+            Text('Service: $service'),
             const SizedBox(height: 20),
-            // ✅ ADD BADGES DISPLAY HERE
+            // ✅ Display badges
             if (vendor['badges'] != null && vendor['badges'] is List)
               Wrap(
                 spacing: 6,
@@ -3249,10 +3360,12 @@ class VendorProfilePage extends StatelessWidget {
                         ))
                     .toList(),
               ),
-            // ✅ END OF BADGES
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+            // ✅ Buttons: wrap for responsive layout
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
               children: [
                 ElevatedButton(
                   onPressed: () {
@@ -3265,7 +3378,8 @@ class VendorProfilePage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 183, 102)),
+                      backgroundColor:
+                          const Color.fromARGB(255, 255, 183, 102)),
                   child: const Text('Location & Availability'),
                 ),
                 ElevatedButton(
@@ -3279,25 +3393,23 @@ class VendorProfilePage extends StatelessWidget {
                         .get();
 
                     if (customerDoc.exists) {
-                      // ✅ Customer → full reviews page
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ReviewsPage(
                             vendorId: vendor['uid'],
-                            vendorName: vendor['name'] ?? "Vendor",
+                            vendorName: vendorName,
                             isCustomer: true,
                           ),
                         ),
                       );
                     } else {
-                      // ✅ Vendor → read-only reviews page
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ReadOnlyReviewsPage(
                             vendorId: vendor['uid'],
-                            vendorName: vendor['name'] ?? "Vendor",
+                            vendorName: vendorName,
                           ),
                         ),
                       );
@@ -3305,49 +3417,56 @@ class VendorProfilePage extends StatelessWidget {
                   },
                   child: const Text("Ratings & Reviews"),
                 ),
-                if (!isOwnProfile)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.chat),
-                        tooltip: 'Chat with vendor',
-                        onPressed: () {
-                          final chatId =
-                              generateChatId(currentUserId, vendorOwnerId);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatScreen(
-                                chatId: chatId,
-                                senderId:
-                                    currentUserId, // 👈 logged-in customer
-                                peerId:
-                                    vendorOwnerId, // 👈 vendor you are chatting with
-                                peerName: vendor['name'] ??
-                                    'Vendor', // 👈 vendor's display nam
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.call, size: 30),
-                        tooltip: 'Call vendor',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CallVendorPage(vendorId: vendorOwnerId),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  )
               ],
             ),
+
+            // ✅ Chat & Call icons BELOW Location button, left aligned
+            if (!isOwnProfile)
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0, left: 4.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.chat),
+                          tooltip: 'Chat with vendor',
+                          onPressed: () {
+                            final chatId =
+                                generateChatId(currentUserId, vendorOwnerId);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                  chatId: chatId,
+                                  senderId: currentUserId,
+                                  peerId: vendorOwnerId,
+                                  peerName: vendorName,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        IconButton(
+                          icon: const Icon(Icons.call, size: 30),
+                          tooltip: 'Call vendor',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CallVendorPage(vendorId: vendorOwnerId),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
@@ -3624,11 +3743,14 @@ class _ReadOnlyReviewsPageState extends State<ReadOnlyReviewsPage> {
 
 class LocationAvailabilityPage extends StatelessWidget {
   final Map<String, dynamic> vendor;
+
   const LocationAvailabilityPage({super.key, required this.vendor});
 
+  /// Open the address in Google Maps
   Future<void> _openInGoogleMaps(String address) async {
     final Uri url = Uri.parse(
-        'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}');
+      'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}',
+    );
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
@@ -3636,7 +3758,16 @@ class LocationAvailabilityPage extends StatelessWidget {
     }
   }
 
-  Widget _infoRow(String label, String? value) {
+  /// Helper to safely get string value from vendor map
+  String getValue(String key) {
+    final value = vendor[key];
+    if (value == null) return 'N/A';
+    if (value is List) return value.join(', ');
+    return value.toString();
+  }
+
+  /// Widget to show label-value row
+  Widget _infoRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
@@ -3651,7 +3782,7 @@ class LocationAvailabilityPage extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              value != null && value.isNotEmpty ? value : 'N/A',
+              value.isNotEmpty ? value : 'N/A',
               style: const TextStyle(fontSize: 16, color: Colors.black54),
             ),
           ),
@@ -3662,7 +3793,9 @@ class LocationAvailabilityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final address = vendor['address'] ?? vendor['fullAddress'];
+    final address = getValue('📍fullAddress') != 'N/A'
+        ? getValue('📍fullAddress')
+        : getValue('address');
 
     return Scaffold(
       appBar: AppBar(
@@ -3672,22 +3805,18 @@ class LocationAvailabilityPage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          _infoRow('Area', vendor['area']),
+          _infoRow('Area', getValue('🌏area')),
           GestureDetector(
             onTap: () {
-              if (address != null && address.isNotEmpty) {
-                _openInGoogleMaps(address);
-              }
+              if (address != 'N/A') _openInGoogleMaps(address);
             },
-            child: _infoRow(
-              'Full Address',
-              address,
-            ),
+            child: _infoRow('Full Address', address),
           ),
-          _infoRow('Available Days', vendor['availableDays']),
-          _infoRow(
-              'General Timing', vendor['timing'] ?? vendor['generalTiming']),
-          _infoRow('Special Timing', vendor['specialTiming']),
+          _infoRow('Available Days', getValue('📅availableDays')),
+          _infoRow('General Timing', getValue('🕒generalTiming')),
+          _infoRow('Special Timing', getValue('⏱️specialTiming')),
+          _infoRow('Phone', getValue('📞phone')),
+          _infoRow('Price Range', getValue('💵priceRange')),
         ]),
       ),
     );
@@ -4644,12 +4773,12 @@ Future<String> uploadImage(File file, String folderName) async {
 
 // 🖼 Pick Image from Gallery
 //Future<File?> pickImage() async {
-  //final picker = ImagePicker();
- // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
- // if (pickedFile != null) {
-  //  return File(pickedFile.path);
- // }
- // return null;
+//final picker = ImagePicker();
+// final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+// if (pickedFile != null) {
+//  return File(pickedFile.path);
+// }
+// return null;
 //}
 
 // 🔍 Search Vendors by Category

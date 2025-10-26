@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:899887915588:android:65202fe5aec1528a2a9211",
+        "android_client_info": {
+          "package_name": "com.example.ecoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbNL5IvuThBVnzhAhVry4lBZvhjoisA4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:899887915588:android:34fb7d356ea7be6e2a9211",
         "android_client_info": {
           "package_name": "com.vrlocalservices.app"
