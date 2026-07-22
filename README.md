@@ -148,6 +148,7 @@ Welcome screen • Customer Dashboard
 <p align="center">
 Service Categories • Post Requirement Screen
 </p>
+
 ---
 
 #  Application Workflow
@@ -165,10 +166,10 @@ Register Business ➜ Add Service Details ➜ Receive Customer Requests ➜ Acce
 
 Firebase services used:
 
-✅ Firebase Authentication  
-✅ Cloud Firestore Database  
-✅ Firebase Storage  
-✅ Firebase Hosting  
+- Firebase Authentication  
+- Cloud Firestore Database  
+- Firebase Storage  
+- Firebase Hosting  
 
 Firebase helps manage users, service data, and application deployment.
 
@@ -180,10 +181,10 @@ Many people struggle to quickly find trusted local service providers, while smal
 
 This application helps:
 
-✔ Customers find services easily  
-✔ Vendors improve their visibility  
-✔ Small businesses get more opportunities  
-✔ Local communities connect digitally  
+- Customers find services easily  
+- Vendors improve their visibility  
+- Small businesses get more opportunities  
+- Local communities connect digitally  
 
 ---
 
