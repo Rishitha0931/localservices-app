@@ -75,7 +75,6 @@ Finding reliable local services like electricians, plumbers, tutors, and other p
 - UI/UX Design Principles
 
 ---
----
 
 # 🖼️ Screenshots
 
@@ -91,7 +90,7 @@ Finding reliable local services like electricians, plumbers, tutors, and other p
 <img width="540" height="1052" alt="welcome_screen" src="https://github.com/user-attachments/assets/25f07ec0-98ee-4f4a-b898-4e3c605876a8" />
 
 ## Customer Dashboard
-<img width="540" height="1052" alt="welcome_screen" src="https://github.com/user-attachments/assets/46d1d45f-3019-447f-8100-c3ed66b7be60" />
+<img width="540" height="1052" alt="customer_dashboard" src="https://github.com/user-attachments/assets/46d1d45f-3019-447f-8100-c3ed66b7be60" />
 
 ## Dashboard
 <img width="540" height="1052" alt="dashboard" src="https://github.com/user-attachments/assets/9aa65537-aaae-46a9-a187-1adf132c21c8" />
