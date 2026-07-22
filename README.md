@@ -75,6 +75,35 @@ Finding reliable local services like electricians, plumbers, tutors, and other p
 - UI/UX Design Principles
 
 ---
+---
+
+# 🖼️ Screenshots
+
+## Splash Screen
+
+<img width="540" height="1046" alt="splash_screen" src="https://github.com/user-attachments/assets/23888f81-3ccc-4a99-b5d4-1a429a5a922e" />
+
+## Introduction Screens
+<img width="540" height="1053" alt="intro1" src="https://github.com/user-attachments/assets/cd59029a-fcdd-48fc-a1ff-a2c9baf91826" />
+<img width="540" height="1056" alt="intro5" src="https://github.com/user-attachments/assets/40f17340-58a8-4296-b720-c60a5eec1e62" />
+
+## Welcome Screen
+<img width="540" height="1052" alt="welcome_screen" src="https://github.com/user-attachments/assets/25f07ec0-98ee-4f4a-b898-4e3c605876a8" />
+
+## Customer Dashboard
+<img width="540" height="1052" alt="welcome_screen" src="https://github.com/user-attachments/assets/46d1d45f-3019-447f-8100-c3ed66b7be60" />
+
+## Dashboard
+<img width="540" height="1052" alt="dashboard" src="https://github.com/user-attachments/assets/9aa65537-aaae-46a9-a187-1adf132c21c8" />
+
+## Service Categories
+<img width="540" height="1048" alt="categories_screen" src="https://github.com/user-attachments/assets/32d2fca0-2136-4817-986c-c8522719a3da" />
+
+## Post Need Screen
+<img width="540" height="1049" alt="postneed_screen" src="https://github.com/user-attachments/assets/41ba1996-7768-4ca0-971c-9de61f3b57de" />
+
+
+---
 
 # 🔄 Application Workflow
 Customer Flow
