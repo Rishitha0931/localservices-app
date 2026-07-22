@@ -70,7 +70,7 @@ The application creates a digital platform where customers can post their needs 
 - Business information
 - Ratings and reviews
 
-## 💬 Communication
+##  Communication
 - Customer-vendor interaction
 - Chat and call support
 
