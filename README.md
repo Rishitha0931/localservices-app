@@ -4,16 +4,23 @@
   <img src="YOUR_APP_BANNER_IMAGE" width="900"/>
 </p>
 
+
+<h3 align="center">
+🚀 Connecting Customers With Trusted Local Service Providers
+</h3>
+
+
 <p align="center">
-  A Flutter + Firebase platform connecting customers with trusted local service providers.
+A Flutter + Firebase based platform that helps customers discover, request, and connect with nearby professionals while enabling local businesses to grow digitally.
 </p>
 
+
 <p align="center">
 
-<img src="https://img.shields.io/badge/Flutter-3.x-blue"/>
-<img src="https://img.shields.io/badge/Dart-Language-blue"/>
-<img src="https://img.shields.io/badge/Firebase-Backend-orange"/>
-<img src="https://img.shields.io/badge/Status-Active-success"/>
+<img src="https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter"/>
+<img src="https://img.shields.io/badge/Dart-Language-0175C2?style=for-the-badge&logo=dart"/>
+<img src="https://img.shields.io/badge/Firebase-Backend-FFCA28?style=for-the-badge&logo=firebase"/>
+<img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge"/>
 
 </p>
 
