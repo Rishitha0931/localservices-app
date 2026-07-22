@@ -1,7 +1,8 @@
 # 🌐 Local Services App
 
 <p align="center">
-  <img src="<img width="1536" height="1024" alt="local_services_App" src="https://github.com/user-attachments/assets/10579daf-c2ee-447c-8864-1147c5b5a3c8" />
+  <img width="1536" height="1024" alt="local_services_App" src="https://github.com/user-attachments/assets/6263c15d-0701-4bae-a2d3-9c775e1bef79" />
+
 </p>
 
 <h1 align="center">
