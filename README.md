@@ -26,15 +26,14 @@ and connect with nearby professionals — making local services faster, easier, 
 
 ---
 
-The application creates a digital platform where customers can post their needs and service providers can respond, helping local businesses improve their reach and customers find trusted services easily.
-
----
-
 # 📌 About The Project
 
 Finding reliable local services like electricians, plumbers, tutors, and other professionals can be challenging.
 
 **Local Services App** provides a simple solution by connecting customers and vendors through a single platform.
+
+The application creates a digital platform where customers can post their needs and service providers can respond, helping local businesses improve their reach and customers find trusted services easily.
+
 
 ### 👥 Customers can:
 - Create an account and login
