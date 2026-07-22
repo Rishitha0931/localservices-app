@@ -112,7 +112,7 @@ The application creates a digital platform where customers can post their needs 
 </p>
 
 <p align="center">
-Splash Screen • Introduction Screens • Welcome Screen
+Splash Screen • Introduction Screens 
 </p>
 
 
@@ -129,7 +129,7 @@ Splash Screen • Introduction Screens • Welcome Screen
 </p>
 
 <p align="center">
-Customer Dashboard • Main Dashboard
+Welcome screen • Customer Dashboard
 </p>
 
 
