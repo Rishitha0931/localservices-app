@@ -26,9 +26,6 @@ and connect with nearby professionals — making local services faster, easier, 
 
 ---
 
-
-A Flutter + Firebase application that connects customers with nearby service providers, making it easier to find, request, and manage local services quickly.
-
 The application creates a digital platform where customers can post their needs and service providers can respond, helping local businesses improve their reach and customers find trusted services easily.
 
 ---
