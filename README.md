@@ -1,5 +1,22 @@
 # 🌐 Local Services App
 
+<p align="center">
+  <img src="YOUR_APP_BANNER_IMAGE" width="900"/>
+</p>
+
+<p align="center">
+  A Flutter + Firebase platform connecting customers with trusted local service providers.
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/Flutter-3.x-blue"/>
+<img src="https://img.shields.io/badge/Dart-Language-blue"/>
+<img src="https://img.shields.io/badge/Firebase-Backend-orange"/>
+<img src="https://img.shields.io/badge/Status-Active-success"/>
+
+</p>
+
 A Flutter + Firebase application that connects customers with nearby service providers, making it easier to find, request, and manage local services quickly.
 
 The application creates a digital platform where customers can post their needs and service providers can respond, helping local businesses improve their reach and customers find trusted services easily.
