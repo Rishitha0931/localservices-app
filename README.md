@@ -77,32 +77,13 @@ Finding reliable local services like electricians, plumbers, tutors, and other p
 ---
 
 # 🔄 Application Workflow
-CUSTOMER FLOW
+Customer Flow
 
-Register/Login
-↓
-Browse Services
-↓
-Select Category
-↓
-Post Requirement
-↓
-Receive Vendor Responses
-↓
-Connect With Vendor
+Register/Login ➜ Browse Services ➜ Select Category ➜ Post Requirement ➜ Receive Vendor Responses ➜ Connect With Vendor
 
-VENDOR FLOW
+Vendor Flow
 
-Register Business
-↓
-Add Service Details
-↓
-Receive Customer Requests
-↓
-Accept Requests
-↓
-Provide Service
-
+Register Business ➜ Add Service Details ➜ Receive Customer Requests ➜ Accept Requests ➜ Provide Service
 
 ---
 
