@@ -1,7 +1,7 @@
 # 🌐 Local Services App
 
 <p align="center">
-  <img src="YOUR_BANNER_IMAGE_LINK" width="100%" />
+  <img src="<img width="1536" height="1024" alt="local_services_App" src="https://github.com/user-attachments/assets/10579daf-c2ee-447c-8864-1147c5b5a3c8" />
 </p>
 
 <h1 align="center">
