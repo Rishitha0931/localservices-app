@@ -1,20 +1,24 @@
-# VR Local Services App:
-**"VR Local"**- **We are local**
-[Connecting local customers with trusted service providers]
+# Local Services App
 
-A Flutter mobile app connecting customers with local service providers.  
-Student project by **Rishitha**.
+A Flutter + Firebase application connecting customers and service providers.
 
 ## Features
-- View Service Category list
-- Browse available local services
-- Select any vendor, view profile
-- Post needs (for customers)
-- Accept needs(for vendors)
-- Vendor availability & chat, call, ratings
-- See current Offers, availability of vendors
-- Elderly-led, Student-led, Women-led and many supportive badges
+- User Authentication
+- Vendor Registration
+- Service Categories
+- Ratings & Reviews
+- Real-time Chat
+- Notifications
 
-## Website / Demo
-Check the live demo here:
-My App Website: https://localservicesapp-9cc3e.web.app/
+## Tech Stack
+- Flutter
+- Firebase Auth
+- Cloud Firestore
+- Firebase Storage
+
+## Screenshots
+(Add screenshots here)
+
+## Future Enhancements
+- AI-based vendor recommendations
+- Multi-language support
