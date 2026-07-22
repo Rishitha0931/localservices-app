@@ -13,12 +13,8 @@ A Flutter + Firebase application connecting customers and service providers.
 ## Tech Stack
 - Flutter
 - Firebase Auth
-- Cloud Firestore
 - Firebase Storage
-
-## Screenshots
-(Add screenshots here)
-
+ 
 ## Future Enhancements
 - AI-based vendor recommendations
 - Multi-language support
