@@ -1,4 +1,4 @@
-# 🌐 Local Services App
+#  Local Services App
 
 <p align="center">
   <img width="1536" height="1024" alt="local_services_App" src="https://github.com/user-attachments/assets/6263c15d-0701-4bae-a2d3-9c775e1bef79" />
@@ -6,7 +6,7 @@
 </p>
 
 <h1 align="center">
-🚀 Connecting Customers With Trusted Local Service Providers
+ Connecting Customers With Trusted Local Service Providers
 </h1>
 
 <p align="center">
@@ -26,7 +26,7 @@ and connect with nearby professionals — making local services faster, easier, 
 
 ---
 
-# 📌 About The Project
+# About The Project
 
 Finding reliable local services like electricians, plumbers, tutors, and other professionals can be challenging.
 
@@ -35,7 +35,7 @@ Finding reliable local services like electricians, plumbers, tutors, and other p
 The application creates a digital platform where customers can post their needs and service providers can respond, helping local businesses improve their reach and customers find trusted services easily.
 
 
-### 👥 Customers can:
+###  Customers can:
 - Create an account and login
 - Browse different service categories
 - View available service providers
@@ -44,7 +44,7 @@ The application creates a digital platform where customers can post their needs 
 - View vendor details
 - Give ratings and reviews
 
-### 🛠️ Vendors can:
+###  Vendors can:
 - Register their services
 - Create their business profile
 - Showcase their skills
@@ -54,18 +54,18 @@ The application creates a digital platform where customers can post their needs 
 
 ---
 
-# ✨ Features
+#  Features
 
-## 🔐 Authentication
+##  Authentication
 - User registration and login
 - Secure Firebase Authentication
 
-## 📂 Service Management
+##  Service Management
 - Multiple service categories
 - Vendor service listings
 - Customer requirement posting
 
-## 👤 Vendor Profiles
+##  Vendor Profiles
 - Service details
 - Business information
 - Ratings and reviews
@@ -74,13 +74,13 @@ The application creates a digital platform where customers can post their needs 
 - Customer-vendor interaction
 - Chat and call support
 
-## 🔔 Notifications
+##  Notifications
 - Updates for customer requests
 - Vendor responses
 
 ---
 
-# 🏗️ Tech Stack
+#  Tech Stack
 
 ## Frontend
 - Flutter
@@ -98,10 +98,10 @@ The application creates a digital platform where customers can post their needs 
 - UI/UX Design Principles
 
 ---
-# 🖼️ App Screenshots
+#  App Screenshots
 
 
-## 🚀 Onboarding Experience
+##  Onboarding Experience
 
 <p align="center">
 
@@ -119,7 +119,7 @@ Splash Screen • Introduction Screens
 ---
 
 
-## 🏠 Dashboard Experience
+##  Dashboard Experience
 
 <p align="center">
 
@@ -136,7 +136,7 @@ Welcome screen • Customer Dashboard
 ---
 
 
-## 🔍 Service Discovery
+##  Service Discovery
 
 <p align="center">
 
@@ -150,7 +150,7 @@ Service Categories • Post Requirement Screen
 </p>
 ---
 
-# 🔄 Application Workflow
+#  Application Workflow
 Customer Flow
 
 Register/Login ➜ Browse Services ➜ Select Category ➜ Post Requirement ➜ Receive Vendor Responses ➜ Connect With Vendor
@@ -161,7 +161,7 @@ Register Business ➜ Add Service Details ➜ Receive Customer Requests ➜ Acce
 
 ---
 
-# 🔥 Firebase Integration
+#  Firebase Integration
 
 Firebase services used:
 
@@ -174,7 +174,7 @@ Firebase helps manage users, service data, and application deployment.
 
 ---
 
-# 🎯 Problem Statement
+#  Problem Statement
 
 Many people struggle to quickly find trusted local service providers, while small businesses often lack a platform to reach customers.
 
@@ -187,7 +187,7 @@ This application helps:
 
 ---
 
-# 🚀 Future Enhancements
+#  Future Enhancements
 
 - AI-based vendor recommendations
 - Location-based service discovery
@@ -200,7 +200,7 @@ This application helps:
 
 ---
 
-# 📚 What I Learned
+#  What I Learned
 
 Building this project helped me gain practical experience in:
 
@@ -214,7 +214,7 @@ Building this project helped me gain practical experience in:
 
 ---
 
-# 👩‍💻 Developer
+#  Developer
 
 **Rishitha Nallamadhi**
 
@@ -229,9 +229,9 @@ Skills:
 
 ---
 
-# ⭐ Project Status
+#  Project Status
 
-🚧 Continuously improving and adding new features.
+ Continuously improving and adding new features.
 
 If you find this project useful or interesting, consider giving it a ⭐ on GitHub.
 
