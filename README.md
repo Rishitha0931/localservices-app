@@ -71,7 +71,7 @@ The platform helps:
 - 
 ## Key Features
 
-## Customer Module
+### Customer Module
 
 - Secure Registration & Login
 - Browse Service Categories
@@ -81,7 +81,7 @@ The platform helps:
 - View Vendor Information
 - Give Ratings and Reviews
 
-## Vendor Module
+### Vendor Module
 
 - Vendor Registration
 - Create Business Profile
@@ -92,25 +92,25 @@ The platform helps:
 
 ## Features
 
-##  Authentication
+###  Authentication
 - User registration and login
 - Secure Firebase Authentication
 
-##  Service Management
+###  Service Management
 - Multiple service categories
 - Vendor service listings
 - Customer requirement posting
 
-##  Vendor Profiles
+###  Vendor Profiles
 - Service details
 - Business information
 - Ratings and reviews
 
-##  Communication
+###  Communication
 - Customer-vendor interaction
 - Chat and call support
 
-##  Notifications
+###  Notifications
 - Updates for customer requests
 - Vendor responses
 
@@ -118,18 +118,18 @@ The platform helps:
 
 #  Tech Stack
 
-## Frontend
+### Frontend
 - Flutter
 - Dart
 - Material Design
 
-## Backend
+### Backend
 - Firebase Authentication
 - Cloud Firestore
 - Firebase Storage
 - Firebase Hosting
 
-## Design
+### Design
 - Figma
 - UI/UX Design Principles
 
