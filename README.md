@@ -23,9 +23,7 @@ and connect with nearby professionals — making local services faster, easier, 
 
 </p>
 
-
 ---
-
 
 ## About The Project
 
