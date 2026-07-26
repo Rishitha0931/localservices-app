@@ -158,7 +158,7 @@ Firebase services used:
 
 Firebase helps manage users, service data, and application deployment.
 
---
+---
 
 #  App Screenshots
 
