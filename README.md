@@ -1,4 +1,4 @@
-#  Local Services App
+# Local Services App
 
 <p align="center">
   <img width="1536" height="1024" alt="local_services_App" src="https://github.com/user-attachments/assets/6263c15d-0701-4bae-a2d3-9c775e1bef79" />
@@ -68,7 +68,7 @@ The platform helps:
 - Vendors improve their visibility
 - Small businesses reach more customers
 - Local communities connect digitally
-- 
+ 
 ## Key Features
 
 ### Customer Module
@@ -266,7 +266,6 @@ The challenges were addressed through:
 - Push notifications
 - Multi-language support
 - Vendor analytics dashboard
-- Improved recommendation system
 
 ## What I Learned
 
@@ -279,6 +278,12 @@ Building this project helped me gain practical experience in:
 - Authentication systems
 - Real-world problem solving
 - Debugging and deployment
+
+---
+
+## Live Demo
+
+https://localservicesapp-9cc3e.web.app
 
 ---
 
@@ -299,6 +304,6 @@ Skills:
 
 #  Project Status
 
- Continuously improving and adding new features.
+Actively maintained and continuously improved.
 
 If you find this project useful or interesting, consider giving it a ⭐ on GitHub.
