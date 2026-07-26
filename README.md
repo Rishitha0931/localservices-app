@@ -69,7 +69,7 @@ The platform helps:
 - Small businesses reach more customers
 - Local communities connect digitally
  
-## Key Features
+## User Modules
 
 ### Customer Module
 
