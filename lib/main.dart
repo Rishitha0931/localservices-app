@@ -2,30 +2,21 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'chat_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'language_provider.dart';
 import 'lang_strings.dart';
-import 'translations.dart';
-//import 'package:share_plus/share_plus.dart';
 import 'theme_provider.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-import 'package:lottie/lottie.dart';
 import 'dart:math';
 import 'animations.dart';
-import 'theme.dart';
-import 'intro_slide.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
-//import 'package:permission_handler/permission_handler.dart';
 
-// ✅ Global Variables (keep them exactly as they are)
+// Global Variables
 String customerName = '';
 String customerAge = '';
 String customerPhone = '';
@@ -71,7 +62,7 @@ final ThemeData darkTheme = ThemeData(
   ),
 );
 
-// 🔤 Simple in-app language manager (no extra imports)
+// Simple app language manager
 class AppLanguage {
   static final ValueNotifier<String> currentLang = ValueNotifier<String>('en');
 
@@ -97,20 +88,10 @@ class AppLanguage {
   }
 }
 
-//Future<void> requestPermissions() async {
-// await [
-// Permission.camera,
-// Permission.storage,
-//  Permission.location,
-//].request();
-//}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ✅ Request permissions first
-  // await requestPermissions();
-
-  // ✅ Firebase init for both web and mobile
+  // Firebase init for both web and mobile
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -130,8 +111,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
-        ChangeNotifierProvider(
-            create: (_) => ThemeProvider()), // ✅ only ThemeProvider now
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: const MyApp(),
     ),
@@ -146,15 +126,15 @@ class MyApp extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, _) {
         return ValueListenableBuilder<String>(
-          valueListenable: AppLanguage.currentLang, // ✅ listens to lang changes
+          valueListenable: AppLanguage.currentLang,
           builder: (context, lang, _) {
             return MaterialApp(
               title: 'Local Services App',
               debugShowCheckedModeBanner: false,
-              theme: lightTheme, // ✅ use your custom light
-              darkTheme: darkTheme, // ✅ use your custom dark
-              themeMode: themeProvider.themeMode, // ✅ toggle globally
-              home: const FirstPage(), // ✅ LogoPage stays light separately
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: themeProvider.themeMode,
+              home: const FirstPage(),
             );
           },
         );
@@ -163,7 +143,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ✅ Global SnackBar helper with slide + fade animation
+// slide + fade animation
 void showAppSnackBar(BuildContext context, String message, Color bgColor) {
   final snackBar = SnackBar(
     content: TweenAnimationBuilder<Offset>(
@@ -194,7 +174,7 @@ void showAppSnackBar(BuildContext context, String message, Color bgColor) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-/// ✅ 1. FIRST PAGE
+// 1. FIRST PAGE
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
 
@@ -209,7 +189,7 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
   late Animation<double> _bounceAnimation;
   late Animation<double> _buttonGlowAnimation;
 
-  // Particle animation controller
+  // Particle animation
   late AnimationController _particleController;
   final List<_Particle> _particles = [];
   final Random _random = Random();
@@ -231,7 +211,7 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
       upperBound: 6.0,
     )..repeat(reverse: true);
 
-    // Bounce animation for emoji
+    // emoji animation
     _bounceController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -241,7 +221,7 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
       CurvedAnimation(parent: _bounceController, curve: Curves.easeInOut),
     );
 
-    // Magical glow animation for button
+    // Animation for button
     _buttonGlowController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -289,8 +269,6 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
         fromTop: fromTop,
       ));
     }
-
-    // Update existing particles
     for (var p in _particles) {
       double direction = p.fromTop ? 1 : -1;
       p.y += direction * 0.002; // slow drift
@@ -339,7 +317,6 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
         vendorData = {
           'vendorId': docVendor['uid'],
           'name': docVendor['name'] ?? '',
-          // add more minimal fields if needed
         };
       }
 
@@ -355,7 +332,7 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
         ),
       );
     } else {
-      // Not logged in → normal intro flow
+      // Not logged in → normal flow
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const IntroPage()),
@@ -365,20 +342,17 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // ✅ Added Theme wrapper to force light mode
+    // Added Theme wrapper to force light mode
     return Theme(
       data: ThemeData.light(),
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 255, 153, 51),
         body: Stack(
           children: [
-            // Particle painter
             CustomPaint(
               size: MediaQuery.of(context).size,
               painter: _ParticlePainter(_particles),
             ),
-
-            // Main content
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -442,7 +416,7 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 40),
 
-                  // Magical glowing Get Started button
+                  // glowing Get Started button
                   AnimatedBuilder(
                     animation: _buttonGlowAnimation,
                     builder: (context, child) {
@@ -479,7 +453,7 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
           ],
         ),
       ),
-    ); // ✅ closed Theme wrapper
+    ); 
   }
 }
 
@@ -523,7 +497,6 @@ class _ParticlePainter extends CustomPainter {
       paint.color = paint.color.withOpacity(p.opacity);
 
       if (p.isLine) {
-        // Draw streak line
         double length = p.size * 4;
         canvas.drawLine(
           Offset(p.x * size.width, p.y * size.height),
@@ -532,7 +505,6 @@ class _ParticlePainter extends CustomPainter {
           paint..strokeWidth = 1.2,
         );
       } else {
-        // Draw circle particle
         canvas.drawCircle(
           Offset(p.x * size.width, p.y * size.height),
           p.size,
@@ -546,7 +518,7 @@ class _ParticlePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-/// ✅ 2. WELCOME OPTIONS PAGE
+// 2. WELCOME OPTIONS PAGE
 
 class WelcomeOptionsPage extends StatefulWidget {
   const WelcomeOptionsPage({super.key});
@@ -579,7 +551,7 @@ class _WelcomeOptionsPageState extends State<WelcomeOptionsPage>
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    // Delay animation start so it's visible after page loads
+    // Delay animation start so it's visible after page loads alsoo
     Future.delayed(const Duration(milliseconds: 150), () {
       if (mounted) _controller.forward();
     });
@@ -712,7 +684,7 @@ class _WelcomeOptionsPageState extends State<WelcomeOptionsPage>
   }
 }
 
-/// ✅ 3. CUSTOMER INFO PAGE
+// 3. CUSTOMER INFO PAGE
 class CustomerSignUpPage extends StatefulWidget {
   const CustomerSignUpPage({super.key});
 
@@ -726,12 +698,11 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  // ✅ New controllers
   final nameController = TextEditingController();
   final ageController = TextEditingController();
   final locationController = TextEditingController();
 
-  bool isLogin = false; // ✅ Toggle between Login and Signup
+  bool isLogin = false; // Toggle between Login and Signup
   bool isLoading = false;
 
   Future<void> _submit() async {
@@ -741,13 +712,12 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
 
     try {
       if (isLogin) {
-        // 🔹 LOGIN
         final userCredential = await _auth.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
 
-        // ✅ Use centralized navigation
+        //  Use navigation
         await _goNext();
       } else {
         // 🔹 SIGNUP
@@ -758,7 +728,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
 
         final uid = userCredential.user!.uid;
 
-        // ✅ Save customer to Firestore
+        // Save customer to Firestore
         final data = {
           'email': emailController.text.trim(),
           'uid': uid,
@@ -767,7 +737,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
           'age': ageController.text.trim(),
           'location': locationController.text.trim(),
           'createdAt': Timestamp.now(),
-          'profileCompleted': false, // ✅ NEW
+          'profileCompleted': false, 
         };
 
         await FirebaseFirestore.instance
@@ -775,14 +745,14 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
             .doc(uid)
             .set(data, SetOptions(merge: true));
 
-        // ✅ Admin special case
+        // Admin special case
         if (emailController.text.trim() == "rishithareddy1@gmail.com") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => const AdminPage()),
           );
         } else {
-          // ✅ Use centralized navigation for normal customers
+          // Use centralized navigation for normal customers
           await _goNext();
         }
       }
@@ -804,7 +774,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
     }
   }
 
-  // ✅ Centralized navigation for first login / profile completion
+  // Centralized navigation for first login / profile completion
   Future<void> _goNext() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final doc =
@@ -900,7 +870,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
-  bool isSaving = false; // ✅ loading spinner state
+  bool isSaving = false; 
 
   @override
   void initState() {
@@ -909,7 +879,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
     _loadProfile();
   }
 
-  // ✅ Enable Firestore offline persistence
+  // Enable Firestore offline persistence
   void _enableOfflineSupport() {
     FirebaseFirestore.instance.settings =
         const Settings(persistenceEnabled: true);
@@ -948,7 +918,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
       return;
     }
 
-    setState(() => isSaving = true); // ✅ Show spinner
+    setState(() => isSaving = true); //  Show spinner
 
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
@@ -962,7 +932,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
       }, SetOptions(merge: true));
 
       if (mounted) {
-        // ✅ Use centralized navigation instead of direct pushReplacement
+        // Use centralized navigation instead of direct pushReplacement
         await _goNext();
       }
     } catch (e) {
@@ -970,11 +940,11 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
         SnackBar(content: Text("Error saving profile: $e")),
       );
     } finally {
-      if (mounted) setState(() => isSaving = false); // ✅ Hide spinner
+      if (mounted) setState(() => isSaving = false); // Hide spinner
     }
   }
 
-  // ✅ Centralized navigation for first login / profile completion
+  // Centralized navigation for first login / profile completion
   Future<void> _goNext() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final doc =
@@ -1021,13 +991,13 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
               decoration: const InputDecoration(labelText: "Address"),
             ),
             TextField(
-              controller: ageController, // ✅ new input
+              controller: ageController, 
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: "Age"),
             ),
             const SizedBox(height: 20),
             isSaving
-                ? const Center(child: CircularProgressIndicator()) // ✅ Spinner
+                ? const Center(child: CircularProgressIndicator()) 
                 : ElevatedButton(
                     onPressed: _saveProfile,
                     child: const Text("Save & Continue"),
@@ -1038,8 +1008,6 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
     );
   }
 }
-
-//// VENDOR REGISTRATION PAGE
 
 // VENDOR REGISTRATION PAGE
 
@@ -1116,7 +1084,6 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
         .set({'timestamp': Timestamp.now()});
 
     setState(() {
-      // Add new service and remove "Other" if it exists
       serviceCategories = [
         ...serviceCategories.where((s) => s != 'Other'),
         newService
@@ -1154,8 +1121,6 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
         password: passwordController.text.trim(),
       );
       final uid = userCredential.user!.uid;
-
-      // ✅ Handle "Other" properly
       String finalCategory = selectedCategory!;
       if (finalCategory == 'Other') {
         final enteredService = otherServiceController.text.trim();
@@ -1167,17 +1132,17 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
           return;
         }
 
-        // ✅ Add new service to serviceList collection
+        // Add new service to serviceList collection
         await FirebaseFirestore.instance
             .collection('serviceList')
             .doc(enteredService)
             .set({'timestamp': Timestamp.now()});
 
-        // ✅ Make this new service the vendor’s category
+        // Now make this new service the vendor’s category
         finalCategory = enteredService;
       }
 
-      // ✅ Vendor data (ensuring category & name are never null)
+      // Vendor data (category & name are never null)
       final data = {
         '👤name': nameController.text.trim(),
         '📞phone': phoneController.text.trim(),
@@ -1197,10 +1162,10 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
         'timestamp': Timestamp.now(),
       };
 
-      // ✅ Save vendor info
+      // Save vendor info
       await FirebaseFirestore.instance.collection('vendors').doc(uid).set(data);
 
-      // ✅ Save under serviceList/{service}/vendors
+      // Save under serviceList/{service}/vendors
       await FirebaseFirestore.instance
           .collection('serviceList')
           .doc(finalCategory)
@@ -1377,7 +1342,7 @@ class _VendorRegistrationPageState extends State<VendorRegistrationPage> {
   }
 }
 
-// CategoriesPage.dart
+// CategoriesPage
 class CategoriesPage extends StatefulWidget {
   final bool isCustomer;
   final bool isVendorLoggedIn;
@@ -1478,7 +1443,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    // ✅ 1️⃣ Responsive number of blocks
+    // adjust number of blocks
     int crossAxisCount;
     if (screenWidth >= 1200) {
       crossAxisCount = 6;
@@ -1492,7 +1457,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       crossAxisCount = 2;
     }
 
-    // ✅ Increased block height: smaller screens get taller blocks
+    // Increased block height: smaller screens get taller blocks
     double childAspectRatio;
     if (screenWidth >= 600) {
       childAspectRatio = 3 / 2; // desktop/tablet
@@ -1502,7 +1467,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       childAspectRatio = 3 / 1.3; // small phone
     }
 
-    // ✅ 3️⃣ Responsive text size
+    // adjust text size
     double textSize;
     if (screenWidth >= 600) {
       textSize = 14;
@@ -1569,10 +1534,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: allCategories.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount, // ✅ responsive
-                  mainAxisSpacing: 12, // ✅ spacing between blocks
+                  crossAxisCount: crossAxisCount,
+                  mainAxisSpacing: 12, 
                   crossAxisSpacing: 12,
-                  childAspectRatio: childAspectRatio, // ✅ responsive height
+                  childAspectRatio: childAspectRatio,
                 ),
                 itemBuilder: (context, index) {
                   final category = allCategories[index];
@@ -1595,12 +1560,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         ),
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 6), // ✅ padding for text
+                            horizontal: 4, vertical: 6), 
                         child: Text(
                           category,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: textSize, // ✅ responsive text size
+                            fontSize: textSize, 
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -1634,7 +1599,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 }
 
-/// ✅ 5. VENDOR DASHBOARD WITH EDIT OPTION
+// 5. VENDOR DASHBOARD WITH EDIT OPTION
 
 class VendorDashboardPage extends StatefulWidget {
   final Map<String, dynamic> vendor;
@@ -1669,7 +1634,7 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
     });
 
     try {
-      // ✅ robust UID source: passed map OR currently signed-in user
+      //  UID source: currently signed-in user
       final uid = (widget.vendor['uid']?.toString().trim().isNotEmpty ?? false)
           ? widget.vendor['uid']
           : FirebaseAuth.instance.currentUser?.uid;
@@ -1687,7 +1652,7 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
         if (vendorDoc.exists) {
           final raw = vendorDoc.data() ?? {};
 
-          // ✅ normalize keys (works with emoji keys, different casings, etc.)
+          // normalize keys (works with emoji keys, different casings)
           final category = _firstNonEmpty(raw, [
             'category',
             '📦category',
@@ -1718,16 +1683,15 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
             'name': name,
             'email': email,
             'category': category,
-            'service': category, // your UI reads 'service' in subtitle
+            'service': category, 
             'area': area,
-            'location': area, // your UI sometimes expects 'location'
+            'location': area,
             'fullAddress': fullAddress,
             'priceRange': priceRange,
             'availableDays': availableDays,
             'generalTiming': generalTiming,
             'specialTiming': specialTiming,
             'phone': phone,
-            // keep capitalized for the second detail card method (if used)
             'Category': category,
           };
 
@@ -1778,13 +1742,13 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
           ]),
       drawer: TweenAnimationBuilder(
         tween: Tween<double>(begin: -1.0, end: 0.0),
-        duration: const Duration(milliseconds: 400), // slowed down a bit
-        curve: Curves.easeInOut, // smooth and professional
+        duration: const Duration(milliseconds: 400), 
+        curve: Curves.easeInOut, 
         builder: (context, value, child) {
           return Transform.translate(
             offset: Offset(value * MediaQuery.of(context).size.width, 0),
             child: Opacity(
-              opacity: 1.0 + value, // fade-in effect
+              opacity: 1.0 + value,
               child: child,
             ),
           );
@@ -1834,39 +1798,9 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
                   ),
                 ),
               ),
-              //ListTile(
-              // leading: const Icon(Icons.favorite, color: Colors.red),
-              //title: const Text("Favourites"),
-              //onTap: () {
-              //Navigator.push(
-              //context,
-              //MaterialPageRoute(
-              // builder: (_) => FavoritesPage(
-              // userId: widget.vendor['uid'], // ✅ FIXED
-              // isVendor: true,
-              // ),
-              //  ),
-              // );
-              // },
-              // ),
-              // ListTile(
-              //leading: const Icon(Icons.language),
-              // title: Text(tr(context, 'change_language')),
-              // trailing: PopupMenuButton<String>(
-              //  icon: const Icon(Icons.arrow_drop_down),
-              // onSelected: (String value) {
-              // Provider.of<LanguageProvider>(context, listen: false)
-              // .changeLanguage(value);
-              // },
-              // itemBuilder: (context) => const [
-              ////  PopupMenuItem(value: 'en', child: Text('English')),
-//PopupMenuItem(value: 'te', child: Text('తెలుగు')),
-              //  PopupMenuItem(value: 'hi', child: Text('हिन्दी')),
-              // ],
-              // ),
-              // ),
+            
 
-              // ✅ Change Language - only English
+              // Change Language - only English for now
               ListTile(
                 leading: const Icon(Icons.language),
                 title: const Text('Language'),
@@ -1928,11 +1862,6 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
                 onTap: () async {
                   Navigator.pop(context);
                   await Future.delayed(const Duration(milliseconds: 300));
-                  // await Share.share(
-                  // "Im using this free Local Services App to grow my business and reach more customers in my area. You should definitely try it – it's free and useful!"
-                  // "నేను ఈ ఫ్రీ లోకల్ సర్వీసెస్ యాప్ వాడి, నా ఏరియాలో కస్టమర్లను పెంచుకోగలిగాను. మీరు కూడా తప్పకుండా ప్రయత్నించండి – ఉచితం, ఉపయోగకరం!"
-                  // "Install Now! using below link-'myapp.in'",
-                  // );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -2006,7 +1935,6 @@ class _VendorDashboardPageState extends State<VendorDashboardPage> {
   }
 }
 
-// (Keeping your second function name the same; it will work with the normalized map.)
 Widget _buildDetailCard(BuildContext context, Map<String, dynamic> vendorData,
     VoidCallback reloadCallback) {
   return Padding(
@@ -2032,9 +1960,9 @@ Widget _buildDetailCard(BuildContext context, Map<String, dynamic> vendorData,
   );
 }
 
-/// ✅ 6. EDIT VENDOR PAGE
+// 6. EDIT VENDOR PAGE
 class VendorEditPage extends StatefulWidget {
-  final String docId; // ✅ This comes from vendor list page
+  final String docId; // This comes from vendor list page
   const VendorEditPage({super.key, required this.docId});
 
   @override
@@ -2106,7 +2034,7 @@ class _VendorEditPageState extends State<VendorEditPage> {
     if (doc.exists) {
       var data = doc.data()!;
 
-      // ✅ Emoji-safe approach for all fields
+      // Emoji-safe approach for all fields
       nameController.text = data['👤name'] ?? data['name'] ?? '';
       emailController.text = data['✉️email'] ?? data['email'] ?? '';
       selectedService =
@@ -2154,7 +2082,7 @@ class _VendorEditPageState extends State<VendorEditPage> {
         .collection('vendors')
         .doc(widget.docId)
         .update({
-      // Name and email are read-only but still kept in Firestore
+      // Name and email are read-only  kept in firestore
       '👤name': nameController.text,
       '✉️email': emailController.text,
       'service': finalService,
@@ -2183,14 +2111,12 @@ class _VendorEditPageState extends State<VendorEditPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              // ✅ Name (read-only)
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(labelText: 'Name'),
                 readOnly: true,
               ),
               const SizedBox(height: 10),
-              // ✅ Email (read-only)
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
@@ -2323,7 +2249,7 @@ class _VendorStatusUpdatePageState extends State<VendorStatusUpdatePage> {
         }
       });
 
-      Navigator.pop(context); // ✅ go back after saving
+      Navigator.pop(context); // go back after saving
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error saving status: $e")),
@@ -2350,7 +2276,7 @@ class _VendorStatusUpdatePageState extends State<VendorStatusUpdatePage> {
             ),
             const SizedBox(height: 20),
 
-            // --- Status options ---
+            // Status options 
             ..._statusOptions.map((option) {
               return RadioListTile<String>(
                 title: Text(option["label"]),
@@ -2392,7 +2318,7 @@ class _VendorStatusUpdatePageState extends State<VendorStatusUpdatePage> {
   }
 }
 
-/// ✅ 7. CUSTOMER DASHBOARD
+// 7. CUSTOMER DASHBOARD
 
 class CustomerDashboardPage extends StatefulWidget {
   const CustomerDashboardPage({super.key});
@@ -2409,9 +2335,9 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
 
   bool _isLoading = true;
 
-  // ✅ CHANGED: Added state for drawer display
-  String customerName = ''; // ✅ CHANGED
-  String customerEmail = ''; // ✅ CHANGED
+ // drawer display
+  String customerName = '';
+  String customerEmail = ''; 
 
   @override
   void initState() {
@@ -2419,27 +2345,27 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
     _loadCustomerData();
   }
 
-// ✅ CHANGED: Load name and email from Firestore
+// Load name and email from Firestore
   Future<void> _loadCustomerData() async {
     setState(() => _isLoading = true);
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
       final doc = await FirebaseFirestore.instance
           .collection('customers')
-          .doc(uid)
+          .doc(uid) 
           .get();
       if (doc.exists) {
         final data = doc.data() as Map<String, dynamic>;
         setState(() {
-          customerName = data['name'] ?? ''; // ✅ CHANGED
-          customerEmail = data['email'] ?? ''; // ✅ CHANGED
+          customerName = data['name'] ?? ''; 
+          customerEmail = data['email'] ?? '';
           nameController.text = customerName;
           ageController.text = data['age'] ?? '';
           addressController.text = data['address'] ?? '';
           phoneController.text = data['phone'] ?? '';
         });
-      }
-    } catch (e) {
+      } 
+    } catch (e) { 
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Error loading profile: $e")));
     } finally {
@@ -2459,12 +2385,12 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
 
       if (!mounted) return;
 
-      // ✅ Show confirmation
+      //  Show confirmation
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile updated successfully!')),
       );
 
-      // ✅ Redirect back to CategoriesPage (no freeze)
+      //  Redirect back to CategoriesPage (no freeze)
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -2522,8 +2448,6 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
           )
         ],
       ),
-
-      // your drawer will remain here ↓
       //DRAWER
       drawer: TweenAnimationBuilder(
         tween: Tween<double>(begin: -1.0, end: 0.0),
@@ -2547,14 +2471,14 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
                 accountName: Text(
                   customerName.isNotEmpty
                       ? customerName
-                      : 'Customer', // ✅ CHANGED
+                      : 'Customer', 
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 accountEmail: Text(
                   customerEmail.isNotEmpty
                       ? customerEmail
-                      : 'example@email.com', // ✅ CHANGED
+                      : 'example@email.com', 
                   style: const TextStyle(fontSize: 16),
                 ),
                 currentAccountPicture: CircleAvatar(
@@ -2562,7 +2486,7 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
                   child: Text(
                     customerName.isNotEmpty
                         ? customerName[0].toUpperCase()
-                        : '?', // ✅ CHANGED
+                        : '?', 
                     style:
                         const TextStyle(fontSize: 30, color: Colors.deepPurple),
                   ),
@@ -2570,7 +2494,7 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
                 decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 255, 183, 102)),
               ),
-              // ✅ ADMIN OPTION (only visible if email matches)
+              // ADMIN OPTION (only visible if email matches)
               if (FirebaseAuth.instance.currentUser?.email ==
                   "rishithareddy1@gmail.com")
                 ListTile(
@@ -2597,31 +2521,14 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
                 },
               ),
 
-              //ListTile(
-              //leading: const Icon(Icons.favorite, color: Colors.red),
-              // title: const Text("Favourites"),
-              // onTap: () {
-              // Navigator.push(
-              //  context,
-              //   MaterialPageRoute(
-              // builder: (context) => FavoritesPage(
-              // userId: FirebaseAuth
-              //     .instance.currentUser!.uid, // customer UID
-              //  isVendor: false,
-              //  ),
-              //   ),
-              // );
-              //  },
-              //  ),
-
               ListTile(
                 leading: const Icon(Icons.language),
-                title: Text(AppLanguage.tr('change_language')), // ✅ dynamic
+                title: Text(AppLanguage.tr('change_language')), 
                 trailing: PopupMenuButton<String>(
                   icon: const Icon(Icons.arrow_drop_down),
                   onSelected: (String value) {
                     AppLanguage.currentLang.value =
-                        value; // ✅ updates instantly
+                        value; //  updates instantly
                   },
                   itemBuilder: (BuildContext context) => const [
                     PopupMenuItem(value: 'en', child: Text('English')),
@@ -2634,7 +2541,7 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
                 builder: (context, themeProvider, child) {
                   return ListTile(
                     leading: const Icon(Icons.brightness_6),
-                    title: Text(AppLanguage.tr('dark_mode')), // ✅ translatable
+                    title: Text(AppLanguage.tr('dark_mode')), 
                     trailing: Switch(
                       value: themeProvider.isDarkMode,
                       onChanged: (value) {
@@ -2656,23 +2563,6 @@ class _CustomerDashboardPageState extends State<CustomerDashboardPage> {
 
                   // Wait for drawer to close
                   await Future.delayed(const Duration(milliseconds: 300));
-
-                  // Share the message
-                  // await Share.share(
-                  //  " Discover Services Around You - Fast, Easy, and Free!"
-                  //  "Use our free Local Services App to:"
-                  //  "⭐Find trusted vendors in your area for tailoring, snacks, tuition & more"
-                  //"📞Chat or call vendors directly - no middlemen"
-                  // "🤝Support local talent around you"
-                  // "Try now - it's 100% free and made for your convenience!"
-                  /// "మీ ప్రదేశంలోని సేవలు - తేలికగా, వేగంగా, ఉచితంగా!"
-                  //"ఈ ఉచిత స్థానిక సేవల యాప్ ద్వారా:"
-                  // "⭐ మీ ప్రదేశంలోని నమ్మకమైన సేవలందించే వారిని కనుగొనండి"
-                  // "📞 వారితో నేరుగా చాట్ చేయండి లేదా కాల్ చేయండి"
-                  //"🤝 మీ చుట్టూ ఉన్న స్థానిక ప్రతిభను ప్రోత్సహించండి"
-                  // "ఇప్పుడు ప్రయత్నించండి - ఇది పూర్తిగా ఉచితం!"
-                  ////"Install Now! using below link-'myapp.in'",
-                  // );
 
                   // Navigate to Thank You page
                   Navigator.push(
@@ -2904,7 +2794,7 @@ class MyAcceptedNeedsPage extends StatelessWidget {
   }
 }
 
-/// ✅ 8. VENDOR LIST PAGE
+// 8. VENDOR LIST PAGE
 class VendorListPage extends StatefulWidget {
   final String category;
   const VendorListPage({super.key, required this.category});
@@ -2934,7 +2824,6 @@ class _VendorListPageState extends State<VendorListPage> {
         };
       }).toList();
 
-      // Remove soft-deleted vendors
       final notDeleted =
           allVendors.where((vendor) => vendor['deleted'] != true).toList();
 
@@ -3165,8 +3054,7 @@ class _VendorListPageState extends State<VendorListPage> {
   }
 }
 
-// ✅ SubmitReviewPage — MUST be above VendorProfilePage if in the same file
-// ✅ SubmitReviewPage — MUST be above VendorProfilePage if in the same file
+//  SubmitReviewPage 
 
 class SubmitReviewPage extends StatefulWidget {
   final String vendorId;
@@ -3302,9 +3190,7 @@ class _SubmitReviewPageState extends State<SubmitReviewPage> {
   }
 }
 
-// ✅ VendorProfilePage
-//// ✅ VendorProfilePage
-/// ✅ VendorProfilePage
+// VendorProfilePage 
 class VendorProfilePage extends StatelessWidget {
   final Map<String, dynamic> vendor;
   final bool isVendorLoggedIn;
@@ -3315,7 +3201,7 @@ class VendorProfilePage extends StatelessWidget {
     this.isVendorLoggedIn = false,
   });
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     final vendorOwnerId = vendor['uid'] ?? '';
     final currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
@@ -3347,7 +3233,7 @@ class VendorProfilePage extends StatelessWidget {
             const SizedBox(height: 10),
             Text('Service: $service'),
             const SizedBox(height: 20),
-            // ✅ Display badges
+            //  Display badges
             if (vendor['badges'] != null && vendor['badges'] is List)
               Wrap(
                 spacing: 6,
@@ -3362,7 +3248,7 @@ class VendorProfilePage extends StatelessWidget {
               ),
             const SizedBox(height: 20),
 
-            // ✅ Buttons: wrap for responsive layout
+            // Buttons
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -3420,7 +3306,7 @@ class VendorProfilePage extends StatelessWidget {
               ],
             ),
 
-            // ✅ Chat & Call icons BELOW Location button, left aligned
+            //  Chat & Call icons BELOW Location button, left aligned
             if (!isOwnProfile)
               Padding(
                 padding: const EdgeInsets.only(top: 12.0, left: 4.0),
@@ -3559,19 +3445,19 @@ class ReadOnlyReviewsPage extends StatefulWidget {
 
   @override
   State<ReadOnlyReviewsPage> createState() =>
-      _ReadOnlyReviewsPageState(); // ✅ added
+      _ReadOnlyReviewsPageState(); 
 }
 
 class _ReadOnlyReviewsPageState extends State<ReadOnlyReviewsPage> {
-  List<DocumentSnapshot> reviewsDocs = []; // ✅ Infinite scroll
-  bool isLoadingMore = false; // ✅ Infinite scroll
-  bool isLoadingInitial = true; // ✅ Infinite scroll
-  DocumentSnapshot? lastDoc; // ✅ Infinite scroll
-  late ScrollController _scrollController; // ✅ Infinite scroll
+  List<DocumentSnapshot> reviewsDocs = []; 
+  bool isLoadingMore = false; 
+  bool isLoadingInitial = true; 
+  DocumentSnapshot? lastDoc; 
+  late ScrollController _scrollController; 
 
   @override
   void initState() {
-    // ✅ Infinite scroll
+    //  Infinite scroll
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(() {
@@ -3585,7 +3471,7 @@ class _ReadOnlyReviewsPageState extends State<ReadOnlyReviewsPage> {
   }
 
   Future<void> _fetchInitialReviews() async {
-    // ✅ Infinite scroll
+    //  Infinite scroll
     final snapshot = await FirebaseFirestore.instance
         .collection('vendors')
         .doc(widget.vendorId)
@@ -3602,7 +3488,7 @@ class _ReadOnlyReviewsPageState extends State<ReadOnlyReviewsPage> {
   }
 
   Future<void> _loadMoreReviews() async {
-    // ✅ Infinite scroll
+    //  Infinite scroll
     if (lastDoc == null) return;
     setState(() => isLoadingMore = true);
 
@@ -3631,10 +3517,10 @@ class _ReadOnlyReviewsPageState extends State<ReadOnlyReviewsPage> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('vendors') // ✅ NEW (was 'reviews')
-            .doc(widget.vendorId) // ✅ NEW (added vendor doc)
-            .collection('reviews') // ✅ NEW (subcollection)
-            .orderBy("timestamp", descending: true) // ✅ NEW
+            .collection('vendors') 
+            .doc(widget.vendorId) 
+            .collection('reviews') 
+            .orderBy("timestamp", descending: true) 
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -3646,7 +3532,7 @@ class _ReadOnlyReviewsPageState extends State<ReadOnlyReviewsPage> {
 
           final reviews = snapshot.data!.docs;
 
-          // ✅ Calculate average rating
+          //  Calculate average rating
           double avgRating = 0;
           for (var r in reviews) {
             final data = r.data() as Map<String, dynamic>;
@@ -3656,7 +3542,7 @@ class _ReadOnlyReviewsPageState extends State<ReadOnlyReviewsPage> {
 
           return Column(
             children: [
-              // ✅ Average Rating UI
+              //  Average Rating UI
               Card(
                 margin: const EdgeInsets.all(12),
                 child: Padding(
@@ -3700,7 +3586,7 @@ class _ReadOnlyReviewsPageState extends State<ReadOnlyReviewsPage> {
                     final review =
                         reviews[index].data() as Map<String, dynamic>;
                     final reviewer = review['userName'] ??
-                        "Anonymous"; // ✅ NEW (was reviewerName)
+                        "Anonymous";
                     final rating = review['rating'] ?? 0;
                     final comment = review['review'] ?? "";
                     return Card(
@@ -3823,8 +3709,7 @@ class LocationAvailabilityPage extends StatelessWidget {
   }
 }
 
-/// ✅ 11. RATINGS & REVIEWS PAGE
-/// ✅ 11. RATINGS & REVIEWS PAGE
+// 11. RATINGS & REVIEWS PAGE
 class ReviewsPage extends StatefulWidget {
   final String vendorId;
   final String vendorName;
@@ -4159,7 +4044,7 @@ class FavoritesPage extends StatelessWidget {
   }
 }
 
-// -------------------- Post a Need (Customer or Vendor) --------------------
+// Post a Need 
 class PostNeedPage extends StatefulWidget {
   final bool isCustomer;
   final String? customerName;
@@ -4211,7 +4096,7 @@ class _PostNeedPageState extends State<PostNeedPage> {
     setState(() => _isLoading = true);
 
     try {
-      // ✅ generate docRef with id
+      //  generate docRef with id
       final docRef = FirebaseFirestore.instance.collection('needs').doc();
 
       await docRef.set({
@@ -4229,7 +4114,7 @@ class _PostNeedPageState extends State<PostNeedPage> {
         'timestamp': FieldValue.serverTimestamp(),
       });
 
-      // ✅ Instead of showing snackbar here, pop FIRST
+      //  Instead of showing snackbar here, pop FIRST
       if (mounted) {
         Navigator.pop(context, true); // return success flag
       }
@@ -4281,7 +4166,7 @@ class _PostNeedPageState extends State<PostNeedPage> {
   }
 }
 
-// -------------------- Available Needs (Vendor) --------------------
+// Available Needs (Vendor)
 class AvailableNeedsPage extends StatefulWidget {
   final String vendorId; // vendor's UID
 
@@ -4309,12 +4194,12 @@ class _AvailableNeedsPageState extends State<AvailableNeedsPage> {
       String docId, String customerId, String needTitle) async {
     try {
       await FirebaseFirestore.instance.collection('needs').doc(docId).update({
-        'status': 'vendor_accepted', // ✅ CHANGED from 'accepted'
+        'status': 'vendor_accepted', 
         'acceptedBy': widget.vendorId,
         'acceptedAt': FieldValue.serverTimestamp(),
       });
 
-      // ✅ ADDED: Store notification for customer with confirmNeeded
+      // Store notification for customer 
       await FirebaseFirestore.instance.collection('Notifications').add({
         'toUserId': customerId,
         'fromUserId': widget.vendorId,
@@ -4322,7 +4207,7 @@ class _AvailableNeedsPageState extends State<AvailableNeedsPage> {
         'message': "Vendor accepted your need \"$needTitle\". Confirm?",
         'timestamp': FieldValue.serverTimestamp(),
         'isRead': false,
-        'confirmNeeded': true, // ✅ ADDED
+        'confirmNeeded': true,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -4379,7 +4264,7 @@ class _AvailableNeedsPageState extends State<AvailableNeedsPage> {
 
             return data['status'] == 'pending' ||
                 data['status'] ==
-                    'vendor_accepted' || // ✅ ADDED vendor_accepted
+                    'vendor_accepted' || 
                 data['status'] == 'accepted';
           }).toList();
 
@@ -4422,7 +4307,7 @@ class _AvailableNeedsPageState extends State<AvailableNeedsPage> {
                       Text("📍 $location"),
                       Text("📅 Posted: $postedAtStr"),
                       Text(
-                        "Status: ${status == 'vendor_accepted' ? "PENDING CONFIRMATION" : status.toUpperCase()}", // ✅ ADDED friendly label
+                        "Status: ${status == 'vendor_accepted' ? "PENDING CONFIRMATION" : status.toUpperCase()}",
                         style: TextStyle(
                           color: status == 'pending'
                               ? Colors.orange
@@ -4491,8 +4376,6 @@ class _AvailableNeedsPageState extends State<AvailableNeedsPage> {
 }
 //notifications page when accept needs
 
-//notifications page when accept needs
-
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
 
@@ -4520,8 +4403,7 @@ class NotificationsPage extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection("Notifications")
-            .where("toUserId", isEqualTo: uid) // ✅ show only MY notifications
-            // no orderBy → avoid composite-index requirement
+            .where("toUserId", isEqualTo: uid) // show only MY notifications
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -4577,7 +4459,7 @@ class NotificationsPage extends StatelessWidget {
                     children: [
                       Text(message),
 
-                      // ✅ Customer confirmation UI (only if needed)
+                      //  Customer confirmation UI (only if needed)
                       if (data["confirmNeeded"] == true)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -4703,7 +4585,7 @@ class NotificationsPage extends StatelessWidget {
   }
 }
 
-// 🔐 Firebase Authentication: Sign Up
+// Firebase Authentication: Sign Up
 Future<String?> signUpWithEmail(String email, String password) async {
   try {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -4716,7 +4598,7 @@ Future<String?> signUpWithEmail(String email, String password) async {
   }
 }
 
-// 🔐 Firebase Authentication: Sign In
+// Firebase Authentication: Sign In
 Future<String?> signInWithEmail(String email, String password) async {
   try {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -4729,14 +4611,14 @@ Future<String?> signInWithEmail(String email, String password) async {
   }
 }
 
-// 👤 Save Vendor/Customer Data to Firestore
+// Save Vendor/Customer Data to Firestore
 Future<void> saveUserData(
     String uid, Map<String, dynamic> data, bool isVendor) async {
   final collection = isVendor ? 'vendors' : 'users';
   await FirebaseFirestore.instance.collection(collection).doc(uid).set(data);
 }
 
-// 🧾 Add Review to Vendor's Profile
+// Add Review to Vendor's Profile
 Future<void> addReview(
     String vendorId, String reviewText, String customerName) async {
   await FirebaseFirestore.instance
@@ -4750,7 +4632,7 @@ Future<void> addReview(
   });
 }
 
-// 💬 Send Chat Message
+// Send Chat Message
 Future<void> sendMessage(String chatId, String senderId, String message) async {
   await FirebaseFirestore.instance
       .collection('chats')
@@ -4763,7 +4645,7 @@ Future<void> sendMessage(String chatId, String senderId, String message) async {
   });
 }
 
-// 📂 Upload Image to Firebase Storage
+// Upload Image to Firebase Storage
 Future<String> uploadImage(File file, String folderName) async {
   final ref =
       FirebaseStorage.instance.ref().child('$folderName/${DateTime.now()}.jpg');
@@ -4781,7 +4663,7 @@ Future<String> uploadImage(File file, String folderName) async {
 // return null;
 //}
 
-// 🔍 Search Vendors by Category
+//  Search Vendors by Category
 Future<List<Map<String, dynamic>>> fetchVendorsByCategory(
     String category) async {
   final query = await FirebaseFirestore.instance
@@ -4791,7 +4673,7 @@ Future<List<Map<String, dynamic>>> fetchVendorsByCategory(
   return query.docs.map((doc) => doc.data()).toList();
 }
 
-// 🚪 Logout Current User
+//  Logout Current User
 Future<void> logout() async {
   await FirebaseAuth.instance.signOut();
 }
@@ -4801,7 +4683,7 @@ class ChatScreen extends StatefulWidget {
   final String chatId;
   final String senderId;
   final String peerName;
-  final String peerId; // ✅ Add peer/vendor id
+  final String peerId; 
 
   const ChatScreen({
     super.key,
@@ -4818,17 +4700,16 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  bool _isTyping = false; // ⭐ Added
+  bool _isTyping = false; 
 
   Future<void> _sendMessage() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
 
     _controller.clear();
-    setState(() => _isTyping = false); // ⭐ Reset typing
+    setState(() => _isTyping = false); 
 
     try {
-      // 🔹 ADDED: store message in Firestore
       final msgDoc = await FirebaseFirestore.instance
           .collection('chats')
           .doc(widget.chatId)
@@ -4836,12 +4717,12 @@ class _ChatScreenState extends State<ChatScreen> {
           .add({
         'text': text,
         'senderId': widget.senderId,
-        'receiverId': widget.peerId, // ✅ store receiver
+        'receiverId': widget.peerId, // store receiver
         'timestamp': FieldValue.serverTimestamp(),
         'edited': false,
       });
 
-      // ⭐ NEW: update lastMessage for chat overview (optional, useful for chat lists)
+      // update lastMessage for chat overview
       await FirebaseFirestore.instance
           .collection('chats')
           .doc(widget.chatId)
@@ -4852,7 +4733,7 @@ class _ChatScreenState extends State<ChatScreen> {
         'receiverId': widget.peerId,
       }, SetOptions(merge: true));
 
-      // 3️⃣ NEW: add notification for the receiver
+      // add notification for the receiver
       await FirebaseFirestore.instance.collection("Notifications").add({
         "title": "New Message",
         "message": text,
@@ -4876,20 +4757,19 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  // 🔹 MODIFIED: delete only locally for user
+//only delete for user
   Future<void> _deleteMessageLocally(String messageId) async {
-    // Option 1: mark a hidden field for this user instead of deleting globally
     await FirebaseFirestore.instance
         .collection('chats')
         .doc(widget.chatId)
         .collection('messages')
         .doc(messageId)
         .set({
-      'deletedFor': FieldValue.arrayUnion([widget.senderId]), // ⭐ NEW
+      'deletedFor': FieldValue.arrayUnion([widget.senderId]), 
     }, SetOptions(merge: true));
   }
 
-  // ✅ ADDED: edit message dialog remains same
+  //  edit message dialog 
   Future<void> _editMessage(String messageId, String oldText) async {
     TextEditingController editController = TextEditingController(text: oldText);
 
@@ -4917,7 +4797,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     .doc(messageId)
                     .update({
                   'text': newText,
-                  'edited': true, // ✅ ADDED: mark as edited
+                  'edited': true, 
                 });
               }
               Navigator.pop(ctx);
@@ -4965,7 +4845,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 );
 
                 if (confirm == true) {
-                  // 🔹 MODIFIED: clear only locally by marking deletedFor
+                  // clear only locally by marking deletedFor
                   final msgs = await messagesRef.get();
                   for (var doc in msgs.docs) {
                     await _deleteMessageLocally(doc.id);
@@ -5012,7 +4892,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     final messageId = messages[index].id;
                     final isMe = msg['senderId'] == widget.senderId;
 
-                    // ⭐ NEW: skip if message deleted for this user
+                    // skip if message deleted for this user
                     if ((msg['deletedFor'] ?? []).contains(widget.senderId)) {
                       return const SizedBox.shrink();
                     }
@@ -5049,7 +4929,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     _editMessage(messageId, msg['text']);
                                   },
                                 ),
-                              // 🔹 MODIFIED: delete only locally
+                              // delete only locally
                               ListTile(
                                 leading: const Icon(Icons.delete),
                                 title: const Text("Delete"),
@@ -5139,7 +5019,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-// 🔁 Language getter function
+// Language getter function
 String tr(BuildContext context, String key) {
   final langCode =
       Provider.of<LanguageProvider>(context).currentLocale.languageCode;
@@ -5297,7 +5177,6 @@ class _IntroPageState extends State<IntroPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // ✅ Vendor Icon added here with animation
                 SlideTransition(
                   position: _slideAnimation,
                   child: FadeTransition(
@@ -5462,7 +5341,7 @@ class ThirdSlide extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(
-                    Icons.groups, // 👥 Community icon
+                    Icons.groups, // Community icon
                     size: 80,
                     color: Colors.white,
                   ),
@@ -5596,7 +5475,7 @@ class FifthSlide extends StatelessWidget {
   }
 }
 
-// ===== CUSTOM TITLE/SUBTITLE BUILDERS =====
+// CUSTOM TITLE/SUBTITLE BUILDERS
 Widget _buildGradientTitle(String text) {
   return ShaderMask(
     shaderCallback: (bounds) => const LinearGradient(
@@ -5624,7 +5503,7 @@ Widget _buildGradientTitle(String text) {
 Widget _buildGradientSubtitle(String text) {
   return ShaderMask(
     shaderCallback: (bounds) => const LinearGradient(
-      colors: [Colors.white, Color(0xFFFFE0B2)], // White to light peach
+      colors: [Colors.white, Color(0xFFFFE0B2)], 
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     ).createShader(bounds),
@@ -5643,7 +5522,7 @@ Widget _buildGradientSubtitle(String text) {
   );
 }
 
-// ===== DOTS WIDGET =====
+//  DOTS WIDGET 
 Widget _buildDots(int activeIndex, BuildContext context) {
   const total = 5;
   final pages = [
@@ -5682,7 +5561,7 @@ Widget _buildDots(int activeIndex, BuildContext context) {
   );
 }
 
-// ===== FADE-IN SAME-PAGE TRANSITION =====
+//  FADE-IN SAME-PAGE TRANSITION 
 Route _createSmoothRoute(Widget page) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => page,
@@ -5696,7 +5575,7 @@ Route _createSmoothRoute(Widget page) {
   );
 }
 
-// ===== PERSISTENT ANIMATED GLOW BACKGROUND =====
+// ANIMATED GLOW BACKGROUND 
 class PersistentAnimatedGlowBackground extends StatefulWidget {
   const PersistentAnimatedGlowBackground({super.key});
 
@@ -5759,7 +5638,7 @@ class _AdminPageState extends State<AdminPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final String adminEmail = "rishithareddy1@gmail.com"; // ✅ Your admin email
+  final String adminEmail = "rishithareddy1@gmail.com"; 
   bool isAdmin = false;
 
   @override
@@ -5814,7 +5693,7 @@ class _AdminPageState extends State<AdminPage> {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
 
-            // ✅ Clickable cards
+            // Clickable cards
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -5891,7 +5770,7 @@ class _AdminPageState extends State<AdminPage> {
   }
 }
 
-/// ✅ Generic List Page with Pagination
+// Generic List Page 
 class FirestoreListPage extends StatefulWidget {
   final String collection;
   const FirestoreListPage({super.key, required this.collection});
@@ -5940,38 +5819,31 @@ class _FirestoreListPageState extends State<FirestoreListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("${widget.collection} List")),
-        // 🔄 CHANGED: switched from one-time ListView on _docs to real-time StreamBuilder
+        //switched from one-time ListView on _docs to real-time StreamBuilder
         body: StreamBuilder<QuerySnapshot>(
-            // 🔄 CHANGED
             stream: _firestore
                 .collection(widget.collection)
-                .snapshots(), // 🔄 CHANGED
+                .snapshots(), 
             builder: (context, snapshot) {
-              // 🔄 CHANGED
               if (snapshot.connectionState == ConnectionState.waiting) {
-                // 🔄 CHANGED
                 return const Center(
-                    child: CircularProgressIndicator()); // 🔄 CHANGED
-              } // 🔄 CHANGED
+                    child: CircularProgressIndicator()); 
+              } 
               if (!snapshot.hasData) {
-                // 🔄 CHANGED
                 return const Center(
-                    child: CircularProgressIndicator()); // 🔄 CHANGED
-              } // 🔄 CHANGED
-              final docs = snapshot.data!.docs; // 🔄 CHANGED
+                    child: CircularProgressIndicator()); 
+              }
+              final docs = snapshot.data!.docs;
               if (docs.isEmpty) {
-                // 🔄 CHANGED
-                return const Center(child: Text("No more data")); // 🔄 CHANGED
-              } // 🔄 CHANGED
+                return const Center(child: Text("No more data")); 
+              } 
               return ListView.builder(
-                // 🔄 CHANGED
-                itemCount: docs.length, // 🔄 CHANGED
+                itemCount: docs.length, 
                 itemBuilder: (context, index) {
-                  // 🔄 CHANGED
-                  final doc = docs[index]; // 🔄 CHANGED
-                  final data = doc.data() as Map<String, dynamic>; // 🔄 CHANGED
+                  final doc = docs[index]; 
+                  final data = doc.data() as Map<String, dynamic>; 
 
-                  // ✅ Helpers
+                  //  Helpers
                   String _fmtTime(DateTime dt) {
                     final h = dt.hour.toString().padLeft(2, '0');
                     final m = dt.minute.toString().padLeft(2, '0');
@@ -5991,7 +5863,7 @@ class _FirestoreListPageState extends State<FirestoreListPage> {
                   final bool isBlocked = _blockedUntil != null &&
                       _blockedUntil!.isAfter(DateTime.now());
 
-                  // ✅ Common Actions (Block/Unblock 30m, Delete-mark, Badges)
+                  //  Common Actions (Block/Unblock 30m, Delete-mark, Badges)
                   Widget _buildActions() {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -6073,14 +5945,14 @@ class _FirestoreListPageState extends State<FirestoreListPage> {
                           icon: Icon(
                             data["deleted"] == true
                                 ? Icons.restore
-                                : Icons.delete, // ✅ show Restore if deleted
+                                : Icons.delete, // show Restore if deleted
                             color: data["deleted"] == true
                                 ? Colors.green
                                 : Colors.redAccent,
                           ),
                           onPressed: () async {
                             if (data["deleted"] == true) {
-                              // ✅ Restore flow
+                              //  Restore flow
                               final confirm = await showDialog<bool>(
                                 context: context,
                                 builder: (ctx) => AlertDialog(
@@ -6113,7 +5985,7 @@ class _FirestoreListPageState extends State<FirestoreListPage> {
                                 });
                               }
                             } else {
-                              // ✅ Delete flow
+                              // Delete flow
                               final confirm = await showDialog<bool>(
                                 context: context,
                                 builder: (ctx) => AlertDialog(
@@ -6225,7 +6097,7 @@ class _FirestoreListPageState extends State<FirestoreListPage> {
                     );
                   }
 
-                  // ✅ Special format for "needs"
+                  //  Special format for "needs"
                   if (widget.collection == "needs") {
                     final fieldsToShow = {
                       "title": "Title",
@@ -6308,7 +6180,7 @@ class _FirestoreListPageState extends State<FirestoreListPage> {
                     );
                   }
 
-                  // ✅ Special format for "customers"
+                  //  Special format for "customers"
                   if (widget.collection == "customers") {
                     final fieldsToShow = {
                       "name": "Name",
@@ -6382,7 +6254,7 @@ class _FirestoreListPageState extends State<FirestoreListPage> {
                     );
                   }
 
-                  // ✅ Default format (vendors, etc.)
+                  //  Default format (vendors, etc.)
                   final fieldsToShow = {
                     "name": "Name",
                     "email": "Email",
@@ -6460,8 +6332,8 @@ class _FirestoreListPageState extends State<FirestoreListPage> {
                       ),
                     ),
                   );
-                }, // 🔄 CHANGED
-              ); // 🔄 CHANGED
-            })); // 🔄 CHANGED
+                }, 
+              ); 
+            })); 
   }
 }
